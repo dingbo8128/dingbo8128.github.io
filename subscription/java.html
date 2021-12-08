@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Subscription with Java - TDengine Connector By Example</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="TDengine Connector By Example (TCBE) is a collection of runnable examples that illustrate features of various TDengine connectors.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="../index.html">Preface</a></li><li class="chapter-item "><a href="../prepare.html"><strong aria-hidden="true">1.</strong> Introduction</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../prepare/intro_java.html"><strong aria-hidden="true">1.1.</strong> Introduction to  Connector/Java</a></li><li class="chapter-item "><a href="../prepare/intro_python.html"><strong aria-hidden="true">1.2.</strong> Introduction to Connector/Python</a></li><li class="chapter-item "><a href="../prepare/intro_go.html"><strong aria-hidden="true">1.3.</strong> Introduction to Connector/Go</a></li><li class="chapter-item "><a href="../prepare/intro_Js.html"><strong aria-hidden="true">1.4.</strong> Introduction to Connector/Node.js</a></li><li class="chapter-item "><a href="../prepare/intro_cpp.html"><strong aria-hidden="true">1.5.</strong> Introduction to Connector/C++</a></li><li class="chapter-item "><a href="../prepare/intro_rust.html"><strong aria-hidden="true">1.6.</strong> Introduction to Connector/Rust</a></li><li class="chapter-item "><a href="../prepare/intro_cs.html"><strong aria-hidden="true">1.7.</strong> Introduction to Connector/C#</a></li><li class="chapter-item "><a href="../prepare/intro_lua.html"><strong aria-hidden="true">1.8.</strong> Introduction to Connector/Lua</a></li></ol></li><li class="chapter-item "><a href="../connecting.html"><strong aria-hidden="true">2.</strong> Connecting to the Server</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../connecting/java.html"><strong aria-hidden="true">2.1.</strong> Get Connection with Java</a></li><li class="chapter-item "><a href="../connecting/python.html"><strong aria-hidden="true">2.2.</strong> Get Connection with Python</a></li><li class="chapter-item "><a href="../connecting/go.html"><strong aria-hidden="true">2.3.</strong> Get Connection with Go</a></li><li class="chapter-item "><a href="../connecting/js.html"><strong aria-hidden="true">2.4.</strong> Get Connection with Node.js</a></li><li class="chapter-item "><a href="../connecting/cpp.html"><strong aria-hidden="true">2.5.</strong> Get Connection with C++</a></li><li class="chapter-item "><a href="../connecting/rust.html"><strong aria-hidden="true">2.6.</strong> Get Connection with Rust</a></li><li class="chapter-item "><a href="../connecting/cs.html"><strong aria-hidden="true">2.7.</strong> Get Connection with C#</a></li><li class="chapter-item "><a href="../connecting/lua.html"><strong aria-hidden="true">2.8.</strong> Get Connection with Lua</a></li></ol></li><li class="chapter-item "><a href="../sync_query.html"><strong aria-hidden="true">3.</strong> Synchronous Query</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sync_query/java.html"><strong aria-hidden="true">3.1.</strong> Synchronous Query with Java</a></li><li class="chapter-item "><a href="../sync_query/python.html"><strong aria-hidden="true">3.2.</strong> Synchronous Query with Python</a></li><li class="chapter-item "><a href="../sync_query/go.html"><strong aria-hidden="true">3.3.</strong> Synchronous Query with Go</a></li><li class="chapter-item "><a href="../sync_query/js.html"><strong aria-hidden="true">3.4.</strong> Synchronous Query with Node.js</a></li><li class="chapter-item "><a href="../sync_query/cpp.html"><strong aria-hidden="true">3.5.</strong> Synchronous Query with C++</a></li><li class="chapter-item "><a href="../sync_query/rust.html"><strong aria-hidden="true">3.6.</strong> Synchronous Query with Rust</a></li><li class="chapter-item "><a href="../sync_query/cs.html"><strong aria-hidden="true">3.7.</strong> Synchronous Query with C#</a></li><li class="chapter-item "><a href="../sync_query/lua.html"><strong aria-hidden="true">3.8.</strong> Synchronous Query with Lua</a></li></ol></li><li class="chapter-item "><a href="../async_query.html"><strong aria-hidden="true">4.</strong> Asynchronous Query</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../async_query/python.html"><strong aria-hidden="true">4.1.</strong> Asynchronous Query with Python</a></li><li class="chapter-item "><a href="../async_query/go.html"><strong aria-hidden="true">4.2.</strong> Asynchronous Query with Go</a></li><li class="chapter-item "><a href="../async_query/js.html"><strong aria-hidden="true">4.3.</strong> Asynchronous Query with Node.js</a></li><li class="chapter-item "><a href="../async_query/cpp.html"><strong aria-hidden="true">4.4.</strong> Asynchronous Query with C++</a></li><li class="chapter-item "><a href="../async_query/rust.html"><strong aria-hidden="true">4.5.</strong> Asynchronous Query with Rust</a></li><li class="chapter-item "><a href="../async_query/cs.html"><strong aria-hidden="true">4.6.</strong> Asynchronous Query with C#</a></li><li class="chapter-item "><a href="../async_query/lua.html"><strong aria-hidden="true">4.7.</strong> Asynchronous Query with Lua</a></li></ol></li><li class="chapter-item "><a href="../stream.html"><strong aria-hidden="true">5.</strong> Continuous Query</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../stream/python.html"><strong aria-hidden="true">5.1.</strong> Continuous Query with Python</a></li><li class="chapter-item "><a href="../stream/js.html"><strong aria-hidden="true">5.2.</strong> Continuous Query with Node.js</a></li><li class="chapter-item "><a href="../stream/lua.html"><strong aria-hidden="true">5.3.</strong> Continuous Query with Lua</a></li></ol></li><li class="chapter-item "><a href="../param_binding.html"><strong aria-hidden="true">6.</strong> Parameter Binding</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../param_binding/java.html"><strong aria-hidden="true">6.1.</strong> Parameter Binding with Java</a></li><li class="chapter-item "><a href="../param_binding/python.html"><strong aria-hidden="true">6.2.</strong> Parameter Binding with Python</a></li><li class="chapter-item "><a href="../param_binding/go.html"><strong aria-hidden="true">6.3.</strong> Parameter Binding with Go</a></li><li class="chapter-item "><a href="../param_binding/cpp.html"><strong aria-hidden="true">6.4.</strong> Parameter Binding with C++</a></li><li class="chapter-item "><a href="../param_binding/rust.html"><strong aria-hidden="true">6.5.</strong> Parameter Binding with Rust</a></li><li class="chapter-item "><a href="../param_binding/cs.html"><strong aria-hidden="true">6.6.</strong> Parameter Binding with C#</a></li></ol></li><li class="chapter-item "><a href="../schemaless.html"><strong aria-hidden="true">7.</strong> Schemaless</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../schemaless/java.html"><strong aria-hidden="true">7.1.</strong> Schemaless Writing with Java</a></li><li class="chapter-item "><a href="../schemaless/python.html"><strong aria-hidden="true">7.2.</strong> Schemaless Writing with Python</a></li><li class="chapter-item "><a href="../schemaless/go.html"><strong aria-hidden="true">7.3.</strong> Schemaless Writing with Go</a></li><li class="chapter-item "><a href="../schemaless/js.html"><strong aria-hidden="true">7.4.</strong> Schemaless Writing with Node.js</a></li><li class="chapter-item "><a href="../schemaless/cpp.html"><strong aria-hidden="true">7.5.</strong> Schemaless Writing with C++</a></li><li class="chapter-item "><a href="../schemaless/rust.html"><strong aria-hidden="true">7.6.</strong> Schemaless Writing with Rust</a></li><li class="chapter-item "><a href="../schemaless/cs.html"><strong aria-hidden="true">7.7.</strong> Schemaless Writing with C#</a></li><li class="chapter-item "><a href="../schemaless/lua.html"><strong aria-hidden="true">7.8.</strong> Schemaless Writing with Lua</a></li></ol></li><li class="chapter-item expanded "><a href="../subscription.html"><strong aria-hidden="true">8.</strong> Subscription</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../subscription/java.html" class="active"><strong aria-hidden="true">8.1.</strong> Subscription with Java</a></li><li class="chapter-item "><a href="../subscription/python.html"><strong aria-hidden="true">8.2.</strong> Subscription with Python</a></li><li class="chapter-item "><a href="../subscription/go.html"><strong aria-hidden="true">8.3.</strong> Subscription with Go</a></li><li class="chapter-item "><a href="../subscription/cpp.html"><strong aria-hidden="true">8.4.</strong> Subscription with C++</a></li><li class="chapter-item "><a href="../subscription/js.html"><strong aria-hidden="true">8.5.</strong> Subscription with Node.js</a></li></ol></li><li class="chapter-item "><a href="../json_type.html"><strong aria-hidden="true">9.</strong> JSON Type</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../json_type/java.html"><strong aria-hidden="true">9.1.</strong> JSON Type Support in Java</a></li><li class="chapter-item "><a href="../json_type/python.html"><strong aria-hidden="true">9.2.</strong> JSON Type Support in Python</a></li><li class="chapter-item "><a href="../json_type/go.html"><strong aria-hidden="true">9.3.</strong> JSON Type Support in Go</a></li><li class="chapter-item "><a href="../json_type/js.html"><strong aria-hidden="true">9.4.</strong> JSON Type Support in Node.js</a></li><li class="chapter-item "><a href="../json_type/cpp.html"><strong aria-hidden="true">9.5.</strong> JSON Type Support in C++</a></li><li class="chapter-item "><a href="../json_type/rust.html"><strong aria-hidden="true">9.6.</strong> JSON Type Support in Rust</a></li><li class="chapter-item "><a href="../json_type/cs.html"><strong aria-hidden="true">9.7.</strong> JSON Type Support in C#</a></li></ol></li><li class="chapter-item "><a href="../restful.html"><strong aria-hidden="true">10.</strong> Restful</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../restful/java.html"><strong aria-hidden="true">10.1.</strong> Restful Support in Java</a></li><li class="chapter-item "><a href="../restful/js.html"><strong aria-hidden="true">10.2.</strong> Restful Support in Node.js</a></li><li class="chapter-item "><a href="../restful/rust.html"><strong aria-hidden="true">10.3.</strong> Restful Support in Rust</a></li></ol></li><li class="chapter-item "><a href="../appendix.html"><strong aria-hidden="true">11.</strong> Appendix</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../appendix/feature_matrix.html"><strong aria-hidden="true">11.1.</strong> Connector Feature Matrix</a></li><li class="chapter-item "><a href="../appendix/troubles1.html"><strong aria-hidden="true">11.2.</strong> Troubleshooting One</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">TDengine Connector By Example</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="subscription-with-java"><a class="header" href="#subscription-with-java">Subscription with Java</a></h1>
+<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>TDengin server:<code>2.2.1.3</code></li>
+</ol>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<pre><code class="language-java">TSDBSubscribe sub = ((TSDBConnection)conn).subscribe(topic, sql, restart);
+</code></pre>
+<ul>
+<li>topic: <code>String</code>. the unique identifier of a subscription</li>
+<li>sql: <code>String</code>. A select expression for this subscription</li>
+<li>restart: <code>boolean</code>. <code>true</code> mean subscribe from the beginning; <code>false</code> means subscribe from last stopped place. </li>
+</ul>
+<pre><code class="language-java">sub.close(keepProcess);
+</code></pre>
+<ul>
+<li>keepProcess: <code>boolean</code>. If the parameter is true, the subscription progress information is reserved, and a subscription with the same name can be created later to continue consuming data. If false, the subscription progress is not retained.</li>
+</ul>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>In this example, we have two threads: one for producing another for consuming. The producing thread insert one record every 100 milliseconds, and the consuming thread consumes once every 1000 milliseconds.</p>
+<pre><code class="language-java">package com.taos.tdjava;
+
+import com.taosdata.jdbc.TSDBConnection;
+import com.taosdata.jdbc.TSDBResultSet;
+import com.taosdata.jdbc.TSDBSubscribe;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class TestSubscription {
+
+    Connection getConnection() throws SQLException {
+        String jdbcUrl = &quot;jdbc:TAOS://localhost:6030/test?user=root&amp;password=taosdata&quot;;
+        Connection conn = DriverManager.getConnection(jdbcUrl);
+        return conn;
+    }
+
+    void startWrite() {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            try (Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate(&quot;drop table if exists tb_sub&quot;);
+                stmt.executeUpdate(&quot;create table tb_sub(ts timestamp, c1 int)&quot;);
+                long ts = System.currentTimeMillis() - 10000;
+                for (int i = 0; i &lt; 100; i++, ts+=100) {
+                    stmt.executeUpdate(&quot;insert into tb_sub values(&quot; + ts + &quot;, &quot; + i + &quot;)&quot;);
+                    Thread.sleep(100); // write one record per 100ms
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+    void startSubscribe() throws SQLException, InterruptedException {
+        Thread.sleep(500); // wait for some data.
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            TSDBSubscribe sub = ((TSDBConnection)conn).subscribe(&quot;test_topic&quot;, &quot;select * from tb_sub&quot;, true);
+            int total = 0;
+            while(true) {
+                TSDBResultSet rs = sub.consume();
+                int count = 0;
+                while(rs.next()) {
+                    count++;
+                    System.out.println(rs.getTimestamp(1) + &quot;, &quot; + rs.getInt(2));
+                }
+                total += count;
+                System.out.printf(&quot;==================%d rows consumed, total %d================\n&quot;, count, total);
+                Thread.sleep(1000); // subscribe once per second
+                // stop when no more data
+                if (count == 0) {
+                    rs.close();
+                    sub.close(true);
+                    break;
+                }
+            }
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException, InterruptedException {
+        TestSubscription test = new TestSubscription();
+        Thread writeThread = new Thread(test::startWrite);
+        writeThread.start();
+        test.startSubscribe();
+    }
+}
+</code></pre>
+<p><strong>Stdout</strong></p>
+<pre><code class="language-cmd">&quot;C:\Program Files\Java\jdk1.8.0_271\bin\java.exe&quot; com.taos.tdjava.TestSubscription
+2021-12-08 12:00:38.872, 0
+2021-12-08 12:00:38.972, 1
+2021-12-08 12:00:39.072, 2
+2021-12-08 12:00:39.172, 3
+==================4 rows consumed, total 4================
+2021-12-08 12:00:39.272, 4
+2021-12-08 12:00:39.372, 5
+2021-12-08 12:00:39.472, 6
+2021-12-08 12:00:39.572, 7
+2021-12-08 12:00:39.672, 8
+2021-12-08 12:00:39.772, 9
+2021-12-08 12:00:39.872, 10
+2021-12-08 12:00:39.972, 11
+2021-12-08 12:00:40.072, 12
+2021-12-08 12:00:40.172, 13
+==================10 rows consumed, total 14================
+2021-12-08 12:00:40.272, 14
+2021-12-08 12:00:40.372, 15
+2021-12-08 12:00:40.472, 16
+2021-12-08 12:00:40.572, 17
+2021-12-08 12:00:40.672, 18
+2021-12-08 12:00:40.772, 19
+2021-12-08 12:00:40.872, 20
+2021-12-08 12:00:40.972, 21
+2021-12-08 12:00:41.072, 22
+2021-12-08 12:00:41.172, 23
+==================10 rows consumed, total 24================
+2021-12-08 12:00:41.272, 24
+2021-12-08 12:00:41.372, 25
+2021-12-08 12:00:41.472, 26
+2021-12-08 12:00:41.572, 27
+2021-12-08 12:00:41.672, 28
+2021-12-08 12:00:41.772, 29
+2021-12-08 12:00:41.872, 30
+2021-12-08 12:00:41.972, 31
+2021-12-08 12:00:42.072, 32
+2021-12-08 12:00:42.172, 33
+==================10 rows consumed, total 34================
+2021-12-08 12:00:42.272, 34
+2021-12-08 12:00:42.372, 35
+2021-12-08 12:00:42.472, 36
+2021-12-08 12:00:42.572, 37
+2021-12-08 12:00:42.672, 38
+2021-12-08 12:00:42.772, 39
+2021-12-08 12:00:42.872, 40
+2021-12-08 12:00:42.972, 41
+2021-12-08 12:00:43.072, 42
+2021-12-08 12:00:43.172, 43
+==================10 rows consumed, total 44================
+2021-12-08 12:00:43.272, 44
+2021-12-08 12:00:43.372, 45
+2021-12-08 12:00:43.472, 46
+2021-12-08 12:00:43.572, 47
+2021-12-08 12:00:43.672, 48
+2021-12-08 12:00:43.772, 49
+2021-12-08 12:00:43.872, 50
+2021-12-08 12:00:43.972, 51
+2021-12-08 12:00:44.072, 52
+2021-12-08 12:00:44.172, 53
+==================10 rows consumed, total 54================
+2021-12-08 12:00:44.272, 54
+2021-12-08 12:00:44.372, 55
+2021-12-08 12:00:44.472, 56
+2021-12-08 12:00:44.572, 57
+2021-12-08 12:00:44.672, 58
+2021-12-08 12:00:44.772, 59
+2021-12-08 12:00:44.872, 60
+2021-12-08 12:00:44.972, 61
+2021-12-08 12:00:45.072, 62
+2021-12-08 12:00:45.172, 63
+==================10 rows consumed, total 64================
+2021-12-08 12:00:45.272, 64
+2021-12-08 12:00:45.372, 65
+2021-12-08 12:00:45.472, 66
+2021-12-08 12:00:45.572, 67
+2021-12-08 12:00:45.672, 68
+2021-12-08 12:00:45.772, 69
+2021-12-08 12:00:45.872, 70
+2021-12-08 12:00:45.972, 71
+2021-12-08 12:00:46.072, 72
+2021-12-08 12:00:46.172, 73
+==================10 rows consumed, total 74================
+2021-12-08 12:00:46.272, 74
+2021-12-08 12:00:46.372, 75
+2021-12-08 12:00:46.472, 76
+2021-12-08 12:00:46.572, 77
+2021-12-08 12:00:46.672, 78
+2021-12-08 12:00:46.772, 79
+2021-12-08 12:00:46.872, 80
+2021-12-08 12:00:46.972, 81
+2021-12-08 12:00:47.072, 82
+==================9 rows consumed, total 83================
+2021-12-08 12:00:47.172, 83
+2021-12-08 12:00:47.272, 84
+2021-12-08 12:00:47.372, 85
+2021-12-08 12:00:47.472, 86
+2021-12-08 12:00:47.572, 87
+2021-12-08 12:00:47.672, 88
+2021-12-08 12:00:47.772, 89
+2021-12-08 12:00:47.872, 90
+2021-12-08 12:00:47.972, 91
+2021-12-08 12:00:48.072, 92
+==================10 rows consumed, total 93================
+2021-12-08 12:00:48.172, 93
+2021-12-08 12:00:48.272, 94
+2021-12-08 12:00:48.372, 95
+2021-12-08 12:00:48.472, 96
+2021-12-08 12:00:48.572, 97
+2021-12-08 12:00:48.672, 98
+2021-12-08 12:00:48.772, 99
+==================7 rows consumed, total 100================
+==================0 rows consumed, total 100================
+
+Process finished with exit code 0
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../subscription.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../subscription/python.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../subscription.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../subscription/python.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
