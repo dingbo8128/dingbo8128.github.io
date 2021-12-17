@@ -143,13 +143,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="subscription-with-java"><a class="header" href="#subscription-with-java">Subscription with Java</a></h1>
-<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
 <li>taos-jdbcriver: <code>2.0.34</code></li>
 <li>TDengin server:<code>2.2.1.3</code></li>
 </ol>
-<h3 id="usage"><a class="header" href="#usage">Usage</a></h3>
+<h3 id="11-usage"><a class="header" href="#11-usage">1.1. Usage</a></h3>
 <pre><code class="language-java">TSDBSubscribe sub = ((TSDBConnection)conn).subscribe(topic, sql, restart);
 </code></pre>
 <ul>
@@ -162,7 +162,7 @@
 <ul>
 <li>keepProcess: <code>boolean</code>. If the parameter is true, the subscription progress information is reserved, and a subscription with the same name can be created later to continue consuming data. If false, the subscription progress is not retained.</li>
 </ul>
-<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<h3 id="12-example"><a class="header" href="#12-example">1.2. Example</a></h3>
 <p>In this example, we have two threads: one for producing another for consuming. The producing thread insert one record every 100 milliseconds, and the consuming thread consumes once every 1000 milliseconds.</p>
 <pre><code class="language-java">package com.taos.tdjava;
 
@@ -247,7 +247,6 @@ public class TestSubscription {
     }
 }
 </code></pre>
-<p><strong>Stdout</strong></p>
 <pre><code class="language-cmd">&quot;C:\Program Files\Java\jdk1.8.0_271\bin\java.exe&quot; com.taos.tdjava.TestSubscription
 2021-12-08 12:00:38.872, 0
 2021-12-08 12:00:38.972, 1

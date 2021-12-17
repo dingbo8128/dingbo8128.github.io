@@ -143,6 +143,26 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="asynchronous-query"><a class="header" href="#asynchronous-query">Asynchronous Query</a></h1>
+<p>In addition to synchronous API, TDengine also provides higher performance asynchronous call API to handle data insertion and query operations. Under the same software and hardware environment, asynchronous API processes data insertion 2 ~ 4 times faster than synchronous API.</p>
+<p>TDengine has a build-in database named log. We'll use it for demo in this chapter.</p>
+<pre><code class="language-cmd">taos&gt; select * from oog.log limit 3\G;
+*************************** 1.row ***************************
+     ts: 2021-11-26 11:53:52.329091
+  level: 0
+content: user:root login from 127.0.0.1, result:success
+ ipaddr: localhost:6030
+*************************** 2.row ***************************
+     ts: 2021-11-26 11:54:39.072420
+  level: 0
+content: user:root login from 127.0.0.1, result:success
+ ipaddr: localhost:6030
+*************************** 3.row ***************************
+     ts: 2021-11-26 13:46:31.364405
+  level: 0
+content: user:root login from 127.0.0.1, result:success
+ ipaddr: localhost:6030
+Query OK, 3 row(s) in set (0.023000s)
+</code></pre>
 
                     </main>
 

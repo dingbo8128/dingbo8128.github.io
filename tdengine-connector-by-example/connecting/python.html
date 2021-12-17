@@ -171,6 +171,8 @@ def test_connection():
     print('client info:', conn.client_info)
     print('server info:', conn.server_info)
     conn.close()
+
+
 </code></pre>
 <pre><code class="language-cmd">client info: 2.2.1.3
 server info: 2.2.1.3
@@ -189,12 +191,14 @@ server info: 2.2.1.3
         print(type(e), e)
         print(&quot;errno: &quot;, taos.taos_errno(None))
         print(&quot;errmsg:&quot;, taos.taos_errstr(None))
+
+
 </code></pre>
 <pre><code class="language-cmd">&lt;class 'taos.error.ConnectionError'&gt; [0xffff]: connect to TDengine failed
 errno:  -2147482749
 errmsg: Invalid database name
 </code></pre>
-<h3 id="23-example-get-connection-use-default-params"><a class="header" href="#23-example-get-connection-use-default-params">2.3 Example: Get Connection Use Default Params</a></h3>
+<h3 id="23-example-use-connection-configure-in-taoscfg"><a class="header" href="#23-example-use-connection-configure-in-taoscfg">2.3 Example: Use Connection Configure in taos.cfg</a></h3>
 <p>You can leave all parameters as default to simplify the code if your server and your client program run on the same host, or you have configured <code>firstEP</code> in <code>taos.cfg</code> </p>
 <p><em><u>C:/TDengine/cfg/taos.cfg</u></em></p>
 <pre><code class="language-cfg">firstEp       server_host_name:6030 # default localhost:6030
@@ -202,6 +206,23 @@ errmsg: Invalid database name
 <pre><code class="language-python">def test_use_default_params():
     conn = taos.connect()
     conn.close()
+
+
+</code></pre>
+<h3 id="24-example-print-table-names"><a class="header" href="#24-example-print-table-names">2.4 Example: Print Table Names</a></h3>
+<p>You can change current database whenever you want by <code>select_db(db_name)</code>.</p>
+<pre><code class="language-python">def test_select_db():
+    conn = taos.connect()
+    conn.select_db(&quot;log&quot;)
+    result = conn.query(&quot;show tables&quot;)
+    tables = result.fetch_all_into_dict()
+    for t in tables:
+        print(t[&quot;table_name&quot;])
+</code></pre>
+<pre><code class="language-cmd">acct_root
+dn1
+slowquery
+log
 </code></pre>
 
                     </main>

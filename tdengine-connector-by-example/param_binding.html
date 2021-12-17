@@ -143,6 +143,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="parameter-binding"><a class="header" href="#parameter-binding">Parameter Binding</a></h1>
+<p>Since version 2.1.2.0, in addition to  <code>taos_query</code> C API, TDengine also provides a Prepare API that supports parameter binding. Like MySQL, these APIs currently only support using question mark <code>?</code> to represent the parameters to be bound, for example:</p>
+<pre><code class="language-sql">insert into ? using weather tags(?, ?) values(?, ?, ?);
+</code></pre>
+<p>Writing data this way can avoid SQL parsing and significantly improve the write performance.</p>
 
                     </main>
 
