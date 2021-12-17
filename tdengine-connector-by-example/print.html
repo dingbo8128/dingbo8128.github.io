@@ -395,44 +395,41 @@ secondEp              cluster_node2:6030
 Process finished with exit code 0
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-python"><a class="header" href="#get-connection-with-python">Get Connection with Python</a></h1>
-<h2 id="pip-install-example"><a class="header" href="#pip-install-example">pip install example</a></h2>
-<p>The easiest way to install Python Connector is using pip.</p>
+<h2 id="1-pip-install-example"><a class="header" href="#1-pip-install-example">1. pip install example</a></h2>
+<p>The easiest way to install Python Connector is <code>pip install</code>.</p>
 <pre><code>pip unisntall taos taospy
 pip install taospy==2.0.34
 </code></pre>
-<h2 id="get-started-4"><a class="header" href="#get-started-4">Get Started</a></h2>
+<h2 id="2-get-started"><a class="header" href="#2-get-started">2. Get Started</a></h2>
 <ol>
 <li>python: <code>3.10</code></li>
 <li>taospy: <code>2.0.34</code></li>
 <li>TDengine server: <code>2.2.1.3</code></li>
 </ol>
-<h3 id="example-11"><a class="header" href="#example-11">Example 1.1</a></h3>
-<p>Get connection,  server version and client version.</p>
+<h3 id="21-example-get-server-version-and-client-version"><a class="header" href="#21-example-get-server-version-and-client-version">2.1. Example: Get Server Version and Client Version</a></h3>
 <pre><code class="language-python">import taos
 
 
 def test_connection():
     # all parameters are optional.
-    # if database is specified, then it must exist. we use log here, because it always exists.
+    # if database is specified,
+    # then it must exist.
+    # we use database log here, because it always exists.
     conn = taos.connect(host=&quot;127.0.0.1&quot;,
                         port=6030,
                         user=&quot;root&quot;,
                         password=&quot;taosdata&quot;,
                         database=&quot;log&quot;)
     print('client info:', conn.client_info)
-    print('server info', conn.server_info)
+    print('server info:', conn.server_info)
     conn.close()
-
-
-# output
-# client info: 2.2.1.3
-# server info 2.2.1.3
-
 </code></pre>
-<h3 id="example-12"><a class="header" href="#example-12">Example 1.2</a></h3>
+<pre><code class="language-cmd">client info: 2.2.1.3
+server info: 2.2.1.3
+</code></pre>
+<h3 id="22-example-get-error-message"><a class="header" href="#22-example-get-error-message">2.2 Example: Get Error Message</a></h3>
 <p>Get error message and error number.</p>
-<pre><code class="language-python">
-def test_wrong_dbname():
+<pre><code class="language-python">def test_wrong_dbname():
     try:
         # if database is specified, then it must exist.
         conn = taos.connect(host=&quot;127.0.0.1&quot;,
@@ -444,13 +441,19 @@ def test_wrong_dbname():
         print(type(e), e)
         print(&quot;errno: &quot;, taos.taos_errno(None))
         print(&quot;errmsg:&quot;, taos.taos_errstr(None))
-
-
-# output
-# &lt;class 'taos.error.ConnectionError'&gt; [0xffff]: connect to TDengine failed
-# errno:  -2147482749
-# errmsg: Invalid database name
-
+</code></pre>
+<pre><code class="language-cmd">&lt;class 'taos.error.ConnectionError'&gt; [0xffff]: connect to TDengine failed
+errno:  -2147482749
+errmsg: Invalid database name
+</code></pre>
+<h3 id="23-example-get-connection-use-default-params"><a class="header" href="#23-example-get-connection-use-default-params">2.3 Example: Get Connection Use Default Params</a></h3>
+<p>You can leave all parameters as default to simplify the code if your server and your client program run on the same host, or you have configured <code>firstEP</code> in <code>taos.cfg</code> </p>
+<p><em><u>C:/TDengine/cfg/taos.cfg</u></em></p>
+<pre><code class="language-cfg">firstEp       server_host_name:6030 # default localhost:6030
+</code></pre>
+<pre><code class="language-python">def test_use_default_params():
+    conn = taos.connect()
+    conn.close()
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-go"><a class="header" href="#get-connection-with-go">Get Connection with Go</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-nodejs"><a class="header" href="#get-connection-with-nodejs">Get Connection with Node.js</a></h1>
@@ -460,7 +463,7 @@ def test_wrong_dbname():
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-lua"><a class="header" href="#get-connection-with-lua">Get Connection with Lua</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="synchronous-query"><a class="header" href="#synchronous-query">Synchronous Query</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="synchronous-query-with-java"><a class="header" href="#synchronous-query-with-java">Synchronous Query with Java</a></h1>
-<h2 id="get-started-5"><a class="header" href="#get-started-5">Get Started</a></h2>
+<h2 id="get-started-4"><a class="header" href="#get-started-4">Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
 <li>taos-jdbcriver: <code>2.0.34</code></li>
@@ -633,17 +636,28 @@ def test_wrong_dbname():
 <div style="break-before: page; page-break-before: always;"></div><h1 id="synchronous-query-with-python"><a class="header" href="#synchronous-query-with-python">Synchronous Query with Python</a></h1>
 <p>Python connector provide two style query APIs.</p>
 <ol>
-<li><a href="https://www.python.org/dev/peps/pep-0249/">PEP-249</a> style. E.g.: <code>cursor.execute() -&gt; List[Tuple]</code>.</li>
-<li>Objective style. E.g.: <code>conn.query() -&gt; TaosResult</code>. <code>TaosResult</code> has many helpful methods.</li>
+<li><a href="https://www.python.org/dev/peps/pep-0249/">PEP-249</a> style. The common use pattern is:
+<pre><code class="language-python">import taos
+conn = taos.connect()
+cursor = conn.cursor()
+cursor.execute(sql)
+</code></pre>
+</li>
+<li>Objective style. The common use pattern is:
+<pre><code class="language-python">import taos
+conn = taos.connect()
+result = conn.query(sql)
+</code></pre>
+</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pep-249-api"><a class="header" href="#pep-249-api">PEP-249 API</a></h1>
-<h2 id="get-started-6"><a class="header" href="#get-started-6">Get Started</a></h2>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
 <li>python: <code>3.10</code></li>
 <li>taospy: <code>2.0.34</code></li>
 <li>TDengine server: <code>2.2.1.3</code></li>
 </ol>
-<h3 id="example-show-database"><a class="header" href="#example-show-database">Example: &quot;show database&quot;</a></h3>
+<h3 id="11-example-show-database"><a class="header" href="#11-example-show-database">1.1. Example: &quot;show database&quot;</a></h3>
 <pre><code class="language-python">def test_pep_249_api():
     conn: taos.TaosConnection = taos.connect(host=&quot;localhost&quot;, port=6030)
     cursor: taos.TaosCursor = conn.cursor()
@@ -663,7 +677,7 @@ def test_wrong_dbname():
 ('test_rust_double_quote_tag', datetime.datetime(2021, 12, 10, 11, 25, 3, 129000), 1, 1, 1, 1, 10, '3650', 16, 6, 100, 4096, 1, 3000, 2, 0, 'ms', 0, 'ready')
 ('test_no_db', datetime.datetime(2021, 12, 10, 15, 23, 35, 858000), 0, 0, 1, 1, 10, '3650', 16, 6, 100, 4096, 1, 3000, 2, 0, 'ms', 0, 'ready')
 </code></pre>
-<h3 id="example-insert-and-select"><a class="header" href="#example-insert-and-select">Example: insert and select</a></h3>
+<h3 id="12-example-insert-and-select"><a class="header" href="#12-example-insert-and-select">1.2. Example: insert and select</a></h3>
 <pre><code class="language-python">def test_insert_and_select():
     conn: taos.TaosConnection = taos.connect(host=&quot;localhost&quot;, port=6030)
     cursor: taos.TaosCursor = conn.cursor()
@@ -714,7 +728,7 @@ description: [('ts', 9, None, None, None, None, False), ('c1', 4, None, None, No
 <li><code>cursor.rowcount</code> must be called after calling <code>fetchall()</code>.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="objective-api"><a class="header" href="#objective-api">Objective API</a></h1>
-<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
+<h2 id="1-get-started-1"><a class="header" href="#1-get-started-1">1. Get Started</a></h2>
 <ol>
 <li>python: <code>3.10</code></li>
 <li>taospy: <code>2.0.34</code></li>
@@ -825,6 +839,13 @@ field_lengths: [34, 8, 4, 4, 2, 2, 2, 26, 4, 4, 4, 4, 1, 4, 1, 1, 5, 1, 12]
 <div style="break-before: page; page-break-before: always;"></div><h1 id="synchronous-query-with-lua"><a class="header" href="#synchronous-query-with-lua">Synchronous Query with Lua</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asynchronous-query"><a class="header" href="#asynchronous-query">Asynchronous Query</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asynchronous-query-with-python"><a class="header" href="#asynchronous-query-with-python">Asynchronous Query with Python</a></h1>
+<h2 id="1-get-started-2"><a class="header" href="#1-get-started-2">1. Get Started</a></h2>
+<ol>
+<li>python: <code>3.10</code></li>
+<li>taospy: <code>2.0.34</code></li>
+<li>TDengine server: <code>2.2.1.3</code></li>
+</ol>
+<h3 id="11-example"><a class="header" href="#11-example">1.1 Example</a></h3>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asynchronous-query-with-go"><a class="header" href="#asynchronous-query-with-go">Asynchronous Query with Go</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asynchronous-query-with-nodejs"><a class="header" href="#asynchronous-query-with-nodejs">Asynchronous Query with Node.js</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asynchronous-query-with-c"><a class="header" href="#asynchronous-query-with-c">Asynchronous Query with C++</a></h1>
@@ -838,7 +859,7 @@ field_lengths: [34, 8, 4, 4, 2, 2, 2, 26, 4, 4, 4, 4, 1, 4, 1, 1, 5, 1, 12]
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding"><a class="header" href="#parameter-binding">Parameter Binding</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding-with-java"><a class="header" href="#parameter-binding-with-java">Parameter Binding with Java</a></h1>
 <p>Since version 2.1.2.0, TDengine's JDBC-JNI implementation has significantly improved parameter binding support for data write (INSERT) scenarios avoiding SQL parsing and significantly improving the write performance.</p>
-<h2 id="get-started-7"><a class="header" href="#get-started-7">Get Started</a></h2>
+<h2 id="get-started-5"><a class="header" href="#get-started-5">Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
 <li>taos-jdbcriver: <code>2.0.34</code></li>
@@ -994,7 +1015,7 @@ public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) 
 <div style="break-before: page; page-break-before: always;"></div><h1 id="schemaless-writing-with-lua"><a class="header" href="#schemaless-writing-with-lua">Schemaless Writing with Lua</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="subscription"><a class="header" href="#subscription">Subscription</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="subscription-with-java"><a class="header" href="#subscription-with-java">Subscription with Java</a></h1>
-<h2 id="get-started-8"><a class="header" href="#get-started-8">Get Started</a></h2>
+<h2 id="get-started-6"><a class="header" href="#get-started-6">Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
 <li>taos-jdbcriver: <code>2.0.34</code></li>
@@ -1229,7 +1250,7 @@ Process finished with exit code 0
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-c-1"><a class="header" href="#json-type-support-in-c-1">JSON Type Support in C#</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="restful-api"><a class="header" href="#restful-api">Restful API</a></h1>
 <p>TDengine's Restful API enable you access TDengine server directly using HTTP requests without installing TDengine client. So it's maybe the most convenient way to use TDengine. Let's test it using <code>curl</code> command.</p>
-<h2 id="1-get-started-1"><a class="header" href="#1-get-started-1">1. Get Started</a></h2>
+<h2 id="1-get-started-3"><a class="header" href="#1-get-started-3">1. Get Started</a></h2>
 <p><strong>Test environment</strong></p>
 <ol>
 <li>TDengin server:<code>2.2.1.3</code></li>
@@ -1361,7 +1382,7 @@ Process finished with exit code 0
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="use-restful-api-with-java"><a class="header" href="#use-restful-api-with-java">Use Restful API with Java</a></h1>
 <p>Java connector wrapped Restful API with JDBC API. You can treat it as another driver besides <code>jdbc:TAOS:*</code>, this is <code>jdbc:TAOS-RS:*</code>.</p>
-<h2 id="1-get-started-2"><a class="header" href="#1-get-started-2">1. Get Started</a></h2>
+<h2 id="1-get-started-4"><a class="header" href="#1-get-started-4">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
 <li>taos-jdbcriver: <code>2.0.34</code></li>

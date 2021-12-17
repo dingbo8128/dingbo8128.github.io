@@ -145,8 +145,19 @@
                         <h1 id="synchronous-query-with-python"><a class="header" href="#synchronous-query-with-python">Synchronous Query with Python</a></h1>
 <p>Python connector provide two style query APIs.</p>
 <ol>
-<li><a href="https://www.python.org/dev/peps/pep-0249/">PEP-249</a> style. E.g.: <code>cursor.execute() -&gt; List[Tuple]</code>.</li>
-<li>Objective style. E.g.: <code>conn.query() -&gt; TaosResult</code>. <code>TaosResult</code> has many helpful methods.</li>
+<li><a href="https://www.python.org/dev/peps/pep-0249/">PEP-249</a> style. The common use pattern is:
+<pre><code class="language-python">import taos
+conn = taos.connect()
+cursor = conn.cursor()
+cursor.execute(sql)
+</code></pre>
+</li>
+<li>Objective style. The common use pattern is:
+<pre><code class="language-python">import taos
+conn = taos.connect()
+result = conn.query(sql)
+</code></pre>
+</li>
 </ol>
 
                     </main>

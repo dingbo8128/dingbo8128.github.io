@@ -143,13 +143,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="pep-249-api"><a class="header" href="#pep-249-api">PEP-249 API</a></h1>
-<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
 <li>python: <code>3.10</code></li>
 <li>taospy: <code>2.0.34</code></li>
 <li>TDengine server: <code>2.2.1.3</code></li>
 </ol>
-<h3 id="example-show-database"><a class="header" href="#example-show-database">Example: &quot;show database&quot;</a></h3>
+<h3 id="11-example-show-database"><a class="header" href="#11-example-show-database">1.1. Example: &quot;show database&quot;</a></h3>
 <pre><code class="language-python">def test_pep_249_api():
     conn: taos.TaosConnection = taos.connect(host=&quot;localhost&quot;, port=6030)
     cursor: taos.TaosCursor = conn.cursor()
@@ -169,7 +169,7 @@
 ('test_rust_double_quote_tag', datetime.datetime(2021, 12, 10, 11, 25, 3, 129000), 1, 1, 1, 1, 10, '3650', 16, 6, 100, 4096, 1, 3000, 2, 0, 'ms', 0, 'ready')
 ('test_no_db', datetime.datetime(2021, 12, 10, 15, 23, 35, 858000), 0, 0, 1, 1, 10, '3650', 16, 6, 100, 4096, 1, 3000, 2, 0, 'ms', 0, 'ready')
 </code></pre>
-<h3 id="example-insert-and-select"><a class="header" href="#example-insert-and-select">Example: insert and select</a></h3>
+<h3 id="12-example-insert-and-select"><a class="header" href="#12-example-insert-and-select">1.2. Example: insert and select</a></h3>
 <pre><code class="language-python">def test_insert_and_select():
     conn: taos.TaosConnection = taos.connect(host=&quot;localhost&quot;, port=6030)
     cursor: taos.TaosCursor = conn.cursor()
