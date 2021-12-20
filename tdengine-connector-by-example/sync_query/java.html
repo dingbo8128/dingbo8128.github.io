@@ -160,9 +160,7 @@
 
     @Test
     public void testCreateDatabaseAndTable() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             // create database
             stmt.executeUpdate(&quot;create database if not exists test&quot;);
@@ -181,9 +179,7 @@
 <p>Insert and query.</p>
 <pre><code class="language-java">    @Test
     public void testInsertAndQuery() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try(Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(&quot;create database if not exists test&quot;);
             stmt.executeUpdate(&quot;use test&quot;);
@@ -217,14 +213,15 @@
 <p>Handle exceptions.</p>
 <pre><code class="language-java">    @Test
     public void testHandleException() throws SQLException {
-        Connection connection = getConnection();
-        try (Statement statement = connection.createStatement()) {
-            // executeQuery
-            ResultSet resultSet = statement.executeQuery(&quot;select * from test.tb_not_exist&quot;);
-        } catch (SQLException e) {
-            System.out.println(&quot;ERROR Message: &quot; + e.getMessage());
-            System.out.println(&quot;ERROR Code: &quot; + e.getErrorCode());
-            e.printStackTrace();
+        try(Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                // executeQuery
+                ResultSet resultSet = statement.executeQuery(&quot;select * from test.tb_not_exist&quot;);
+            } catch (SQLException e) {
+                System.out.println(&quot;ERROR Message: &quot; + e.getMessage());
+                System.out.println(&quot;ERROR Code: &quot; + e.getErrorCode());
+                e.printStackTrace();
+            }
         }
     }
     //output
@@ -240,9 +237,7 @@
 <p>Get meta data from ResultSet and print result with column names.</p>
 <pre><code class="language-java">    @Test
     public void printResult() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try(Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             ResultSet resultSet = stmt.executeQuery(&quot;select * from test.tb&quot;);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -298,16 +293,17 @@
 
     @Test
     public void testBatchInsert() throws SQLException {
-        Connection conn = getConnection();
-        String sql = generateSql();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(&quot;create table if not exists &quot; + dbname + &quot;.&quot; + stbname + &quot;(ts timestamp, col int) tags(id int)&quot;);
-            long start = System.currentTimeMillis();
-            stmt.execute(sql);
-            long end = System.currentTimeMillis();
-            System.out.println(&quot;insert &quot; + tables * rows + &quot; records, cost &quot; + (end - start)+ &quot;ms&quot;);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        try(Connection conn = getConnection()) {
+            String sql = generateSql();
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(&quot;create table if not exists &quot; + dbname + &quot;.&quot; + stbname + &quot;(ts timestamp, col int) tags(id int)&quot;);
+                long start = System.currentTimeMillis();
+                stmt.execute(sql);
+                long end = System.currentTimeMillis();
+                System.out.println(&quot;insert &quot; + tables * rows + &quot; records, cost &quot; + (end - start) + &quot;ms&quot;);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     //output
@@ -343,6 +339,20 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

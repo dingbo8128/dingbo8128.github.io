@@ -278,6 +278,20 @@ field_lengths: [34, 8, 4, 4, 2, 2, 2, 26, 4, 4, 4, 4, 1, 4, 1, 1, 5, 1, 12]
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

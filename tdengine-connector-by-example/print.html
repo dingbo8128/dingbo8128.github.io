@@ -254,7 +254,7 @@ python -m pip install .
 <li>taos-jdbcriver: <code>2.0.34</code></li>
 <li>TDengin server:<code>2.2.1.3</code></li>
 </ol>
-<h3 id="21-example-get-connection"><a class="header" href="#21-example-get-connection">2.1 Example: Get connection</a></h3>
+<h3 id="21-example-get-connection-use-url"><a class="header" href="#21-example-get-connection-use-url">2.1 Example: Get Connection Use URL</a></h3>
 <pre><code class="language-java">    @Test
     public void testGetConnection() throws SQLException {
         String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
@@ -263,10 +263,20 @@ python -m pip install .
         conn.close();
     }
 </code></pre>
-<h3 id="22-example-specify-connection-properties"><a class="header" href="#22-example-specify-connection-properties">2.2 Example: Specify Connection Properties</a></h3>
+<h3 id="22-example-specify-user-and-password-outside-url"><a class="header" href="#22-example-specify-user-and-password-outside-url">2.2 Example: Specify User and Password outside URL</a></h3>
+<pre><code class="language-java">    @Test
+    public void testGetConnectionWithURLandParam() throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                &quot;jdbc:TAOS://127.0.0.1:6030&quot;,
+                &quot;root&quot;,
+                &quot;taosdata&quot;);
+        conn.close();
+    }
+</code></pre>
+<h3 id="23-example-specify-connection-properties"><a class="header" href="#23-example-specify-connection-properties">2.3 Example: Specify Connection Properties</a></h3>
 <p>Establishing a connection with URL and Properties.</p>
 <pre><code class="language-java">    @Test
-    public void getConnectionWithProperties() throws Exception{
+    public void getConnectionWithURLAndProperties() throws Exception {
         String jdbcUrl = &quot;jdbc:TAOS://localhost:6030?user=root&amp;password=taosdata&quot;;
         Properties connProps = new Properties();
         connProps.setProperty(TSDBDriver.PROPERTY_KEY_CHARSET, &quot;UTF-8&quot;);
@@ -276,7 +286,7 @@ python -m pip install .
         conn.close();
     }
 </code></pre>
-<h3 id="23-example-use-connection-configure-in-taoscfg"><a class="header" href="#23-example-use-connection-configure-in-taoscfg">2.3 Example: Use Connection Configure in taos.cfg</a></h3>
+<h3 id="24-example-use-connection-configure-in-taoscfg"><a class="header" href="#24-example-use-connection-configure-in-taoscfg">2.4 Example: Use Connection Configure in taos.cfg</a></h3>
 <p>Establishing a connection using parameters in the client configuration file. For example:</p>
 <p><strong>taos.cfg</strong></p>
 <pre><code class="language-cfg"># first fully qualified domain name (FQDN) for TDengine system
@@ -291,14 +301,14 @@ secondEp              cluster_node2:6030
         conn.close();
     }
 </code></pre>
-<h3 id="24-example-get-error-message"><a class="header" href="#24-example-get-error-message">2.4 Example: Get Error Message</a></h3>
+<h3 id="25-example-get-error-message"><a class="header" href="#25-example-get-error-message">2.5 Example: Get Error Message</a></h3>
 <p>Get JNI Error message.</p>
 <pre><code class="language-java">    @Test
-    public void testGetErrorInfo() throws SQLException {
-        try {
-            String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
-                    &quot;localhost&quot;, &quot;6030&quot;, &quot;test768&quot;, &quot;root&quot;, &quot;taosdata&quot;);
-            Connection conn = DriverManager.getConnection(jdbcUrl);
+    public void testGetErrorInfo() {
+        String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
+                &quot;localhost&quot;, &quot;6030&quot;, &quot;test768&quot;, &quot;root&quot;, &quot;taosdata&quot;);
+        try (Connection conn = DriverManager.getConnection(jdbcUrl)) {
+            // test
         } catch (SQLException e) {
             System.out.println(&quot;ErrorCode--&quot; + e.getErrorCode());
             System.out.println(&quot;ErrorMessage--&quot; + e.getMessage());
@@ -308,7 +318,7 @@ secondEp              cluster_node2:6030
     // ErrorCode--9044
     // ErrorMessage--JNI ERROR (2354): Invalid database name
 </code></pre>
-<h3 id="25-example-use-connection-pool"><a class="header" href="#25-example-use-connection-pool">2.5 Example: Use Connection Pool</a></h3>
+<h3 id="26-example-use-connection-pool"><a class="header" href="#26-example-use-connection-pool">2.6 Example: Use Connection Pool</a></h3>
 <p>Get connection from connection pool. </p>
 <p>In order to run this example you should have add some dependencies in your <code>pom.xml</code> and properly configure log4j.</p>
 <pre><code class="language-xml">&lt;dependency&gt;
@@ -342,7 +352,7 @@ secondEp              cluster_node2:6030
         config.setIdleTimeout(0);       // max idle time for recycle idle connection
         config.setConnectionTestQuery(&quot;select server_status()&quot;); //validation query
         HikariDataSource ds = new HikariDataSource(config); //create datasource
-        Connection  connection = ds.getConnection(); // get connection
+        Connection connection = ds.getConnection(); // get connection
         Statement statement = connection.createStatement(); // get statement
         //query or insert
         statement.executeQuery(&quot;show databases&quot;);
@@ -392,6 +402,16 @@ secondEp              cluster_node2:6030
 
 Process finished with exit code 0
 </code></pre>
+<h2 id="3--upgrade-to-jdbc-driver-2035"><a class="header" href="#3--upgrade-to-jdbc-driver-2035">3.  Upgrade to JDBC Driver 2.0.35</a></h2>
+<p><strong>Test Environment:</strong></p>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcriver: <code>2.0.35</code></li>
+<li>TDengin server:<code>*</code></li>
+</ol>
+<h3 id="31--set-tdengine-client-parameters"><a class="header" href="#31--set-tdengine-client-parameters">3.1  Set TDengine Client Parameters</a></h3>
+<p>You can set more TDengine client parameters in both URL and properties now.</p>
+<p>(testing)</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-python"><a class="header" href="#get-connection-with-python">Get Connection with Python</a></h1>
 <h2 id="1-pip-install-example"><a class="header" href="#1-pip-install-example">1. pip install example</a></h2>
 <p>The easiest way to install Python Connector is <code>pip install</code>.</p>
@@ -448,7 +468,7 @@ server info: 2.2.1.3
 errno:  -2147482749
 errmsg: Invalid database name
 </code></pre>
-<h3 id="23-example-use-connection-configure-in-taoscfg-1"><a class="header" href="#23-example-use-connection-configure-in-taoscfg-1">2.3 Example: Use Connection Configure in taos.cfg</a></h3>
+<h3 id="23-example-use-connection-configure-in-taoscfg"><a class="header" href="#23-example-use-connection-configure-in-taoscfg">2.3 Example: Use Connection Configure in taos.cfg</a></h3>
 <p>You can leave all parameters as default to simplify the code if your server and your client program run on the same host, or you have configured <code>firstEP</code> in <code>taos.cfg</code> </p>
 <p><em><u>C:/TDengine/cfg/taos.cfg</u></em></p>
 <pre><code class="language-cfg">firstEp       server_host_name:6030 # default localhost:6030
@@ -499,9 +519,7 @@ log
 
     @Test
     public void testCreateDatabaseAndTable() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             // create database
             stmt.executeUpdate(&quot;create database if not exists test&quot;);
@@ -520,9 +538,7 @@ log
 <p>Insert and query.</p>
 <pre><code class="language-java">    @Test
     public void testInsertAndQuery() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try(Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(&quot;create database if not exists test&quot;);
             stmt.executeUpdate(&quot;use test&quot;);
@@ -556,14 +572,15 @@ log
 <p>Handle exceptions.</p>
 <pre><code class="language-java">    @Test
     public void testHandleException() throws SQLException {
-        Connection connection = getConnection();
-        try (Statement statement = connection.createStatement()) {
-            // executeQuery
-            ResultSet resultSet = statement.executeQuery(&quot;select * from test.tb_not_exist&quot;);
-        } catch (SQLException e) {
-            System.out.println(&quot;ERROR Message: &quot; + e.getMessage());
-            System.out.println(&quot;ERROR Code: &quot; + e.getErrorCode());
-            e.printStackTrace();
+        try(Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                // executeQuery
+                ResultSet resultSet = statement.executeQuery(&quot;select * from test.tb_not_exist&quot;);
+            } catch (SQLException e) {
+                System.out.println(&quot;ERROR Message: &quot; + e.getMessage());
+                System.out.println(&quot;ERROR Code: &quot; + e.getErrorCode());
+                e.printStackTrace();
+            }
         }
     }
     //output
@@ -579,9 +596,7 @@ log
 <p>Get meta data from ResultSet and print result with column names.</p>
 <pre><code class="language-java">    @Test
     public void printResult() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try(Connection conn = getConnection()) {
             Statement stmt = conn.createStatement();
             ResultSet resultSet = stmt.executeQuery(&quot;select * from test.tb&quot;);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -637,16 +652,17 @@ log
 
     @Test
     public void testBatchInsert() throws SQLException {
-        Connection conn = getConnection();
-        String sql = generateSql();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(&quot;create table if not exists &quot; + dbname + &quot;.&quot; + stbname + &quot;(ts timestamp, col int) tags(id int)&quot;);
-            long start = System.currentTimeMillis();
-            stmt.execute(sql);
-            long end = System.currentTimeMillis();
-            System.out.println(&quot;insert &quot; + tables * rows + &quot; records, cost &quot; + (end - start)+ &quot;ms&quot;);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        try(Connection conn = getConnection()) {
+            String sql = generateSql();
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(&quot;create table if not exists &quot; + dbname + &quot;.&quot; + stbname + &quot;(ts timestamp, col int) tags(id int)&quot;);
+                long start = System.currentTimeMillis();
+                stmt.execute(sql);
+                long end = System.currentTimeMillis();
+                System.out.println(&quot;insert &quot; + tables * rows + &quot; records, cost &quot; + (end - start) + &quot;ms&quot;);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     //output
@@ -929,30 +945,29 @@ public class TestParamBind {
     private static Random r = new Random();
 
     private static Connection getConnection() throws SQLException {
-        String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
-                &quot;localhost&quot;, &quot;6030&quot;, &quot;test&quot;, &quot;root&quot;, &quot;taosdata&quot;);
-        Connection conn = DriverManager.getConnection(jdbcUrl);
+        Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://127.0.0.1:6030&quot;, &quot;root&quot;, &quot;taosdata&quot;);
         return conn;
     }
 
     private static void createTable(Connection conn) throws SQLException {
         try(Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(&quot;drop table weather_test&quot;);
-            stmt.executeUpdate(&quot;create stable &quot; +
-                    &quot;weather_test (ts timestamp, c1 int, c2 binary(10)) &quot; +
+            stmt.executeUpdate(&quot;create database if not exists java_test&quot;);
+            stmt.executeUpdate(&quot;use java_test&quot;);
+            stmt.executeUpdate(&quot;drop table if exists weather&quot;);
+            stmt.executeUpdate(&quot;create stable if not exists &quot; +
+                    &quot;weather(ts timestamp, c1 int, c2 binary(10)) &quot; +
                     &quot;tags(no int, location binary(10))&quot;);
         }
     }
+
     public static void test() throws SQLException {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             createTable(conn);
             // In the INSERT statement,
             // the VALUES clause allows you to specify a specific column;
             // If automatic table creation is adopted,
             // the TAGS clause needs to set the parameter values of all TAGS columns
-            String psql = &quot;insert into ? using weather_test tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
+            String psql = &quot;insert into ? using weather tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
             try (TSDBPreparedStatement pst = (TSDBPreparedStatement) conn.prepareStatement(psql)) {
                 pst.setTableName(&quot;w1&quot;);
                 // set tags
@@ -982,10 +997,6 @@ public class TestParamBind {
                 pst.columnDataClearBatch();
                 pst.columnDataCloseBatch();
             }
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
     }
 
@@ -1000,19 +1011,20 @@ public class TestParamBind {
 
 </code></pre>
 <p><strong>Result:</strong></p>
-<pre><code class="language-shell">taos&gt; select tbname, * from weather_test;
-tbname |           ts            |     c1      |     c2     |     no      |  location  |
-========================================================================================
-w1     | 2021-12-07 12:20:34.947 |          48 | test99     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.948 |          16 | test33     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.949 |          84 | test50     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.950 |          89 | test72     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.951 |          16 | test47     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.952 |           5 | test31     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.953 |          78 | test72     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.954 |           3 | test91     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.955 |          22 | test17     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.956 |          94 | test87     |           4 | Beijing    |
+<pre><code class="language-shell">taos&gt; select  tbname, * from weather;
+             tbname             |           ts            |     c1      |     c2     |     no      |  location  |
+=================================================================================================================
+ w1                             | 2021-12-20 12:11:28.277 |          16 | test64     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.278 |          87 | test21     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.279 |           5 | test41     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.280 |          34 | test44     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.281 |          96 | test19     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.282 |          29 | test0      |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.283 |          66 | test59     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.284 |          41 | test64     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.285 |          78 | test88     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.286 |          28 | test45     |           7 | Beijing    |
+Query OK, 10 row(s) in set (0.119000s)
 </code></pre>
 <p><strong>Note:</strong></p>
 <ol>
@@ -1046,6 +1058,14 @@ public void setShort(int columnIndex, ArrayList&lt;Short&gt; list) throws SQLExc
 public void setString(int columnIndex, ArrayList&lt;String&gt; list, int size) throws SQLException
 public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) throws SQLException
 </code></pre>
+<h2 id="2-upgrade-to-jdbc-driver-2036"><a class="header" href="#2-upgrade-to-jdbc-driver-2036">2. Upgrade to JDBC Driver 2.0.36</a></h2>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcriver: <code>2.0.36</code></li>
+<li>TDengin server:<code>2.2.1.3</code></li>
+</ol>
+<h3 id="21-feature-bind-different-table-before-executebatch"><a class="header" href="#21-feature-bind-different-table-before-executebatch">2.1 Feature: Bind Different Table before <code>ExecuteBatch</code></a></h3>
+<p>(developing)</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding-with-python"><a class="header" href="#parameter-binding-with-python">Parameter Binding with Python</a></h1>
 <h2 id="1-get-started-5"><a class="header" href="#1-get-started-5">1. Get Started</a></h2>
 <ol>
@@ -1231,9 +1251,7 @@ public class TestSubscription {
     }
 
     void startWrite() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             try (Statement stmt = conn.createStatement()) {
                 stmt.executeUpdate(&quot;drop table if exists tb_sub&quot;);
                 stmt.executeUpdate(&quot;create table tb_sub(ts timestamp, c1 int)&quot;);
@@ -1245,21 +1263,12 @@ public class TestSubscription {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
         }
     }
 
     void startSubscribe() throws SQLException, InterruptedException {
         Thread.sleep(500); // wait for some data.
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             TSDBSubscribe sub = ((TSDBConnection) conn).subscribe(&quot;test_topic&quot;, &quot;select * from tb_sub&quot;, true);
             int total = 0;
             while (true) {
@@ -1278,10 +1287,6 @@ public class TestSubscription {
                     sub.close(true);
                     break;
                 }
-            }
-        } finally {
-            if (conn != null) {
-                conn.close();
             }
         }
     }
@@ -1873,6 +1878,20 @@ Process finished with exit code 0
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

@@ -170,7 +170,7 @@
 <li>taos-jdbcriver: <code>2.0.34</code></li>
 <li>TDengin server:<code>2.2.1.3</code></li>
 </ol>
-<h3 id="21-example-get-connection"><a class="header" href="#21-example-get-connection">2.1 Example: Get connection</a></h3>
+<h3 id="21-example-get-connection-use-url"><a class="header" href="#21-example-get-connection-use-url">2.1 Example: Get Connection Use URL</a></h3>
 <pre><code class="language-java">    @Test
     public void testGetConnection() throws SQLException {
         String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
@@ -179,10 +179,20 @@
         conn.close();
     }
 </code></pre>
-<h3 id="22-example-specify-connection-properties"><a class="header" href="#22-example-specify-connection-properties">2.2 Example: Specify Connection Properties</a></h3>
+<h3 id="22-example-specify-user-and-password-outside-url"><a class="header" href="#22-example-specify-user-and-password-outside-url">2.2 Example: Specify User and Password outside URL</a></h3>
+<pre><code class="language-java">    @Test
+    public void testGetConnectionWithURLandParam() throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                &quot;jdbc:TAOS://127.0.0.1:6030&quot;,
+                &quot;root&quot;,
+                &quot;taosdata&quot;);
+        conn.close();
+    }
+</code></pre>
+<h3 id="23-example-specify-connection-properties"><a class="header" href="#23-example-specify-connection-properties">2.3 Example: Specify Connection Properties</a></h3>
 <p>Establishing a connection with URL and Properties.</p>
 <pre><code class="language-java">    @Test
-    public void getConnectionWithProperties() throws Exception{
+    public void getConnectionWithURLAndProperties() throws Exception {
         String jdbcUrl = &quot;jdbc:TAOS://localhost:6030?user=root&amp;password=taosdata&quot;;
         Properties connProps = new Properties();
         connProps.setProperty(TSDBDriver.PROPERTY_KEY_CHARSET, &quot;UTF-8&quot;);
@@ -192,7 +202,7 @@
         conn.close();
     }
 </code></pre>
-<h3 id="23-example-use-connection-configure-in-taoscfg"><a class="header" href="#23-example-use-connection-configure-in-taoscfg">2.3 Example: Use Connection Configure in taos.cfg</a></h3>
+<h3 id="24-example-use-connection-configure-in-taoscfg"><a class="header" href="#24-example-use-connection-configure-in-taoscfg">2.4 Example: Use Connection Configure in taos.cfg</a></h3>
 <p>Establishing a connection using parameters in the client configuration file. For example:</p>
 <p><strong>taos.cfg</strong></p>
 <pre><code class="language-cfg"># first fully qualified domain name (FQDN) for TDengine system
@@ -207,14 +217,14 @@ secondEp              cluster_node2:6030
         conn.close();
     }
 </code></pre>
-<h3 id="24-example-get-error-message"><a class="header" href="#24-example-get-error-message">2.4 Example: Get Error Message</a></h3>
+<h3 id="25-example-get-error-message"><a class="header" href="#25-example-get-error-message">2.5 Example: Get Error Message</a></h3>
 <p>Get JNI Error message.</p>
 <pre><code class="language-java">    @Test
-    public void testGetErrorInfo() throws SQLException {
-        try {
-            String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
-                    &quot;localhost&quot;, &quot;6030&quot;, &quot;test768&quot;, &quot;root&quot;, &quot;taosdata&quot;);
-            Connection conn = DriverManager.getConnection(jdbcUrl);
+    public void testGetErrorInfo() {
+        String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
+                &quot;localhost&quot;, &quot;6030&quot;, &quot;test768&quot;, &quot;root&quot;, &quot;taosdata&quot;);
+        try (Connection conn = DriverManager.getConnection(jdbcUrl)) {
+            // test
         } catch (SQLException e) {
             System.out.println(&quot;ErrorCode--&quot; + e.getErrorCode());
             System.out.println(&quot;ErrorMessage--&quot; + e.getMessage());
@@ -224,7 +234,7 @@ secondEp              cluster_node2:6030
     // ErrorCode--9044
     // ErrorMessage--JNI ERROR (2354): Invalid database name
 </code></pre>
-<h3 id="25-example-use-connection-pool"><a class="header" href="#25-example-use-connection-pool">2.5 Example: Use Connection Pool</a></h3>
+<h3 id="26-example-use-connection-pool"><a class="header" href="#26-example-use-connection-pool">2.6 Example: Use Connection Pool</a></h3>
 <p>Get connection from connection pool. </p>
 <p>In order to run this example you should have add some dependencies in your <code>pom.xml</code> and properly configure log4j.</p>
 <pre><code class="language-xml">&lt;dependency&gt;
@@ -258,7 +268,7 @@ secondEp              cluster_node2:6030
         config.setIdleTimeout(0);       // max idle time for recycle idle connection
         config.setConnectionTestQuery(&quot;select server_status()&quot;); //validation query
         HikariDataSource ds = new HikariDataSource(config); //create datasource
-        Connection  connection = ds.getConnection(); // get connection
+        Connection connection = ds.getConnection(); // get connection
         Statement statement = connection.createStatement(); // get statement
         //query or insert
         statement.executeQuery(&quot;show databases&quot;);
@@ -308,6 +318,16 @@ secondEp              cluster_node2:6030
 
 Process finished with exit code 0
 </code></pre>
+<h2 id="3--upgrade-to-jdbc-driver-2035"><a class="header" href="#3--upgrade-to-jdbc-driver-2035">3.  Upgrade to JDBC Driver 2.0.35</a></h2>
+<p><strong>Test Environment:</strong></p>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcriver: <code>2.0.35</code></li>
+<li>TDengin server:<code>*</code></li>
+</ol>
+<h3 id="31--set-tdengine-client-parameters"><a class="header" href="#31--set-tdengine-client-parameters">3.1  Set TDengine Client Parameters</a></h3>
+<p>You can set more TDengine client parameters in both URL and properties now.</p>
+<p>(testing)</p>
 
                     </main>
 
@@ -338,6 +358,20 @@ Process finished with exit code 0
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

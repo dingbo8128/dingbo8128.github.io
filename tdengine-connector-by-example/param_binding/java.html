@@ -166,30 +166,29 @@ public class TestParamBind {
     private static Random r = new Random();
 
     private static Connection getConnection() throws SQLException {
-        String jdbcUrl = String.format(&quot;jdbc:TAOS://%s:%s/%s?user=%s&amp;password=%s&quot;,
-                &quot;localhost&quot;, &quot;6030&quot;, &quot;test&quot;, &quot;root&quot;, &quot;taosdata&quot;);
-        Connection conn = DriverManager.getConnection(jdbcUrl);
+        Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://127.0.0.1:6030&quot;, &quot;root&quot;, &quot;taosdata&quot;);
         return conn;
     }
 
     private static void createTable(Connection conn) throws SQLException {
         try(Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(&quot;drop table weather_test&quot;);
-            stmt.executeUpdate(&quot;create stable &quot; +
-                    &quot;weather_test (ts timestamp, c1 int, c2 binary(10)) &quot; +
+            stmt.executeUpdate(&quot;create database if not exists java_test&quot;);
+            stmt.executeUpdate(&quot;use java_test&quot;);
+            stmt.executeUpdate(&quot;drop table if exists weather&quot;);
+            stmt.executeUpdate(&quot;create stable if not exists &quot; +
+                    &quot;weather(ts timestamp, c1 int, c2 binary(10)) &quot; +
                     &quot;tags(no int, location binary(10))&quot;);
         }
     }
+
     public static void test() throws SQLException {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             createTable(conn);
             // In the INSERT statement,
             // the VALUES clause allows you to specify a specific column;
             // If automatic table creation is adopted,
             // the TAGS clause needs to set the parameter values of all TAGS columns
-            String psql = &quot;insert into ? using weather_test tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
+            String psql = &quot;insert into ? using weather tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
             try (TSDBPreparedStatement pst = (TSDBPreparedStatement) conn.prepareStatement(psql)) {
                 pst.setTableName(&quot;w1&quot;);
                 // set tags
@@ -219,10 +218,6 @@ public class TestParamBind {
                 pst.columnDataClearBatch();
                 pst.columnDataCloseBatch();
             }
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
         }
     }
 
@@ -237,19 +232,20 @@ public class TestParamBind {
 
 </code></pre>
 <p><strong>Result:</strong></p>
-<pre><code class="language-shell">taos&gt; select tbname, * from weather_test;
-tbname |           ts            |     c1      |     c2     |     no      |  location  |
-========================================================================================
-w1     | 2021-12-07 12:20:34.947 |          48 | test99     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.948 |          16 | test33     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.949 |          84 | test50     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.950 |          89 | test72     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.951 |          16 | test47     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.952 |           5 | test31     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.953 |          78 | test72     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.954 |           3 | test91     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.955 |          22 | test17     |           4 | Beijing    |
-w1     | 2021-12-07 12:20:34.956 |          94 | test87     |           4 | Beijing    |
+<pre><code class="language-shell">taos&gt; select  tbname, * from weather;
+             tbname             |           ts            |     c1      |     c2     |     no      |  location  |
+=================================================================================================================
+ w1                             | 2021-12-20 12:11:28.277 |          16 | test64     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.278 |          87 | test21     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.279 |           5 | test41     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.280 |          34 | test44     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.281 |          96 | test19     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.282 |          29 | test0      |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.283 |          66 | test59     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.284 |          41 | test64     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.285 |          78 | test88     |           7 | Beijing    |
+ w1                             | 2021-12-20 12:11:28.286 |          28 | test45     |           7 | Beijing    |
+Query OK, 10 row(s) in set (0.119000s)
 </code></pre>
 <p><strong>Note:</strong></p>
 <ol>
@@ -283,6 +279,14 @@ public void setShort(int columnIndex, ArrayList&lt;Short&gt; list) throws SQLExc
 public void setString(int columnIndex, ArrayList&lt;String&gt; list, int size) throws SQLException
 public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) throws SQLException
 </code></pre>
+<h2 id="2-upgrade-to-jdbc-driver-2036"><a class="header" href="#2-upgrade-to-jdbc-driver-2036">2. Upgrade to JDBC Driver 2.0.36</a></h2>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcriver: <code>2.0.36</code></li>
+<li>TDengin server:<code>2.2.1.3</code></li>
+</ol>
+<h3 id="21-feature-bind-different-table-before-executebatch"><a class="header" href="#21-feature-bind-different-table-before-executebatch">2.1 Feature: Bind Different Table before <code>ExecuteBatch</code></a></h3>
+<p>(developing)</p>
 
                     </main>
 
@@ -313,6 +317,20 @@ public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) 
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

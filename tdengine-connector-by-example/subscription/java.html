@@ -184,9 +184,7 @@ public class TestSubscription {
     }
 
     void startWrite() {
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             try (Statement stmt = conn.createStatement()) {
                 stmt.executeUpdate(&quot;drop table if exists tb_sub&quot;);
                 stmt.executeUpdate(&quot;create table tb_sub(ts timestamp, c1 int)&quot;);
@@ -198,21 +196,12 @@ public class TestSubscription {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
         }
     }
 
     void startSubscribe() throws SQLException, InterruptedException {
         Thread.sleep(500); // wait for some data.
-        Connection conn = null;
-        try {
-            conn = getConnection();
+        try (Connection conn = getConnection()) {
             TSDBSubscribe sub = ((TSDBConnection) conn).subscribe(&quot;test_topic&quot;, &quot;select * from tb_sub&quot;, true);
             int total = 0;
             while (true) {
@@ -231,10 +220,6 @@ public class TestSubscription {
                     sub.close(true);
                     break;
                 }
-            }
-        } finally {
-            if (conn != null) {
-                conn.close();
             }
         }
     }
@@ -393,6 +378,20 @@ Process finished with exit code 0
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
