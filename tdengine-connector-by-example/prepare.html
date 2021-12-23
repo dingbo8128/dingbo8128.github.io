@@ -158,10 +158,18 @@ systemctl status taosd
 <h3 id="install-from-package"><a class="header" href="#install-from-package">Install from package</a></h3>
 <p>All packages can be found at <a href="https://www.taosdata.com/en/all-downloads/">https://www.taosdata.com/en/all-downloads/</a></p>
 <h4 id="deb-package-on-debian-or-ubuntu"><a class="header" href="#deb-package-on-debian-or-ubuntu">deb package on Debian or Ubuntu</a></h4>
+<p>Uninstall previous version</p>
+<pre><code>sudo dpkg -r tdengine
+</code></pre>
+<p>Install</p>
 <pre><code class="language-bash">sudo dpkg -i TDengine-server-2.2.1.3-Linux-x64.deb
 sudo systemctl start taosd
 </code></pre>
 <h4 id="rpm-package-on-centos-or-redhat"><a class="header" href="#rpm-package-on-centos-or-redhat">rpm package on Centos or Redhat</a></h4>
+<p>Uninstall previous version</p>
+<pre><code>sudo rpm -e tdengine
+</code></pre>
+<p>Install</p>
 <pre><code>sudo rpm -ivh TDengine-server-2.1.2.0-Linux-x64.rpm
 sudo systemctl start taosd
 </code></pre>
