@@ -147,7 +147,7 @@
 <h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h3 id="11-example"><a class="header" href="#11-example">1.1 Example</a></h3>
@@ -231,7 +231,6 @@ public class TestParamBind {
 }
 
 </code></pre>
-<p><strong>Result:</strong></p>
 <pre><code class="language-shell">taos&gt; select  tbname, * from weather;
              tbname             |           ts            |     c1      |     c2     |     no      |  location  |
 =================================================================================================================
@@ -282,11 +281,107 @@ public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) 
 <h2 id="2-upgrade-to-jdbc-driver-2036"><a class="header" href="#2-upgrade-to-jdbc-driver-2036">2. Upgrade to JDBC Driver 2.0.36</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.36</code></li>
-<li>TDengine: <code>2.2.1.3</code></li>
+<li>taos-jdbcdriver: <code>2.0.36</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
 </ol>
-<h3 id="21-feature-bind-different-table-before-executebatch"><a class="header" href="#21-feature-bind-different-table-before-executebatch">2.1 Feature: Bind Different Table before <code>ExecuteBatch</code></a></h3>
-<p>(developing)</p>
+<h3 id="21-example-bind-different-tables-in-one-batch"><a class="header" href="#21-example-bind-different-tables-in-one-batch">2.1 Example: Bind Different Tables in One Batch</a></h3>
+<p>You can insert into multiple tables in ont batch using param biding api now. It's a new feature of JdBC driver.
+In the following example, we insert into three sub stables in one batch.</p>
+<pre><code class="language-java">package com.taos.test;
+
+import com.taosdata.jdbc.TSDBPreparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class TestBindMultiTable {
+    private Random r = new Random();
+
+    private Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://127.0.0.1:6030&quot;, &quot;root&quot;, &quot;taosdata&quot;);
+        return conn;
+    }
+
+    private void createTable(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(&quot;drop database if exists java_test&quot;);
+            stmt.execute(&quot;create database java_test&quot;);
+            stmt.execute(&quot;use java_test&quot;);
+            stmt.execute(&quot;create stable weather(ts timestamp, c1 int, c2 binary(10)) &quot; +
+                    &quot;tags(no int, location binary(10))&quot;);
+        }
+    }
+
+    public void run() throws SQLException {
+        int numOfTables = 3;
+        int numOfRows = 5;
+        try (Connection conn = getConnection()) {
+            createTable(conn);
+            String psql = &quot;insert into ? using weather tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
+            try (TSDBPreparedStatement pst = (TSDBPreparedStatement) conn.prepareStatement(psql)) {
+                for (int t = 0; t &lt; numOfTables; t++) {
+                    // change sub table name
+                    pst.setTableName(&quot;w&quot; + t);
+                    // set tags
+                    pst.setTagInt(0, r.nextInt(10));
+                    pst.setTagString(1, &quot;City_&quot; + (t));
+                    // set values
+                    ArrayList&lt;Long&gt; ts = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        ts.add(System.currentTimeMillis() + i);
+                    }
+                    pst.setTimestamp(0, ts);
+                    ArrayList&lt;Integer&gt; s1 = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        s1.add(r.nextInt(100));
+                    }
+                    pst.setInt(1, s1);
+                    ArrayList&lt;String&gt; s2 = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        s2.add(&quot;test&quot; + r.nextInt(100));
+                    }
+                    pst.setString(2, s2, 10);
+                    // The cache is not cleared after AddBatch. Do not bind new data again before ExecuteBatch
+                    pst.columnDataAddBatch();
+                }
+                pst.columnDataExecuteBatch();
+                pst.columnDataCloseBatch();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        TestBindMultiTable test = new TestBindMultiTable();
+        test.run();
+    }
+}
+
+</code></pre>
+<pre><code class="language-cmd">
+taos&gt; select * from java_test.weather;
+           ts            |     c1      |     c2     |     no      |  location  |
+================================================================================
+ 2021-12-24 11:00:15.736 |          72 | test14     |           3 | City_0     |
+ 2021-12-24 11:00:15.737 |          62 | test69     |           3 | City_0     |
+ 2021-12-24 11:00:15.738 |          46 | test39     |           3 | City_0     |
+ 2021-12-24 11:00:15.739 |          13 | test42     |           3 | City_0     |
+ 2021-12-24 11:00:15.740 |          75 | test72     |           3 | City_0     |
+ 2021-12-24 11:00:15.770 |          35 | test22     |           6 | City_1     |
+ 2021-12-24 11:00:15.771 |          44 | test95     |           6 | City_1     |
+ 2021-12-24 11:00:15.772 |           9 | test4      |           6 | City_1     |
+ 2021-12-24 11:00:15.773 |          72 | test51     |           6 | City_1     |
+ 2021-12-24 11:00:15.774 |          45 | test32     |           6 | City_1     |
+ 2021-12-24 11:00:15.778 |          42 | test10     |           8 | City_2     |
+ 2021-12-24 11:00:15.779 |          62 | test81     |           8 | City_2     |
+ 2021-12-24 11:00:15.780 |          71 | test4      |           8 | City_2     |
+ 2021-12-24 11:00:15.781 |          41 | test95     |           8 | City_2     |
+ 2021-12-24 11:00:15.782 |          66 | test73     |           8 | City_2     |
+Query OK, 15 row(s) in set (0.066000s)
+</code></pre>
 
                     </main>
 

@@ -143,6 +143,57 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="schemaless-writing"><a class="header" href="#schemaless-writing">Schemaless Writing</a></h1>
+<p>Since version 2.3.0.0, TDengine support several schemaless writing protocols, including:</p>
+<ol>
+<li>InfluxDB Line Protocol</li>
+<li>OpenTSDB telnet Protocol</li>
+<li>OpenTSDB JSON Protocol</li>
+</ol>
+<p>In this way, super table and it's sub tables will be created automatically as needed. </p>
+<h2 id="1-influxdb-line-protocol"><a class="header" href="#1-influxdb-line-protocol">1. InfluxDB Line Protocol</a></h2>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-txt">measurementName,tagKey=tagValue fieldKey=&quot;fieldValue&quot; 1465839830100400200
+--------------- --------------- --------------------- -------------------
+       |               |                  |                    |
+  Measurement       Tag set           Field set            Timestamp
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-txt">measurementName,tag1=value1,tag2=value2 fieldKey=&quot;fieldValue&quot; 1556813561098000000
+</code></pre>
+<p><strong>Reference:</strong> <a href="https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol">line-protocol</a></p>
+<h2 id="2-opentsdb-telnet-protocol"><a class="header" href="#2-opentsdb-telnet-protocol">2. OpenTSDB Telnet Protocol</a></h2>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-txt">put &lt;metric&gt; &lt;timestamp&gt; &lt;value&gt; &lt;tagk_1&gt;=&lt;tagv_1&gt;[ &lt;tagk_n&gt;=&lt;tagv_n&gt;]
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-txt">put sys.if.bytes.out 1479496100 1.3E3 host=web01 interface=eth0
+put sys.procs.running 1479496100 42 host=web01
+</code></pre>
+<p><strong>Reference:</strong> <a href="http://opentsdb.net/docs/build/html/api_telnet/put.html">Telnet Style API</a></p>
+<h2 id="3-opentsdb-json-protocol"><a class="header" href="#3-opentsdb-json-protocol">3. OpenTSDB JSON Protocol</a></h2>
+<p><strong>Example:</strong></p>
+<pre><code class="language-json">[
+    {
+        &quot;metric&quot;: &quot;sys.cpu.nice&quot;,
+        &quot;timestamp&quot;: 1346846400,
+        &quot;value&quot;: 18,
+        &quot;tags&quot;: {
+           &quot;host&quot;: &quot;web01&quot;,
+           &quot;dc&quot;: &quot;lga&quot;
+        }
+    },
+    {
+        &quot;metric&quot;: &quot;sys.cpu.nice&quot;,
+        &quot;timestamp&quot;: 1346846400,
+        &quot;value&quot;: 9,
+        &quot;tags&quot;: {
+           &quot;host&quot;: &quot;web02&quot;,
+           &quot;dc&quot;: &quot;lga&quot;
+        }
+    }
+]
+</code></pre>
+<p><strong>Reference:</strong> <a href="http://opentsdb.net/docs/build/html/api_http/put.html">HTTP API</a></p>
 
                     </main>
 

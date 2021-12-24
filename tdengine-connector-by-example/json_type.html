@@ -143,6 +143,35 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="json-type"><a class="header" href="#json-type">JSON Type</a></h1>
+<h2 id="get-started"><a class="header" href="#get-started">Get Started</a></h2>
+<p>From TDengine-2.4.0.0, TAG with JSON type can be used. The maximum length of JSON tag is 16k. The JSON value of a JSON tag could not have nested JSON object. Only one JSON tag is allowed and JSON tag can't co-exists with other tags. This is, if your table have a JSON tag, then it can't have other tags.</p>
+<pre><code class="language-sql">taos&gt; create database test;
+Query OK, 0 of 0 row(s) in database (0.010000s)
+
+taos&gt; use test;
+Query OK, 0 of 0 row(s) in database (0.002000s)
+
+taos&gt; create stable s1(ts timestamp, v1 int) tags(info json);
+Query OK, 0 of 0 row(s) in database (0.009000s)
+
+taos&gt; create table s1_1 using s1 tags('{&quot;k1&quot;: &quot;v1&quot;}');
+Query OK, 0 of 0 row(s) in database (0.034000s)
+
+taos&gt; insert into s1_1 values(now, 1);
+Query OK, 1 of 1 row(s) in database (0.005000s)
+
+taos&gt; select * from s1 where info-&gt;'k1' = 'v1';
+           ts            |     v1      |              info              |
+=========================================================================
+ 2021-12-24 09:27:20.867 |           1 | {&quot;k1&quot;:&quot;v1&quot;}                    |
+Query OK, 1 row(s) in set (0.024000s)
+
+taos&gt; select info-&gt;'k1' from s1;
+           info-&gt;'k1'           |
+=================================
+ &quot;v1&quot;                           |
+Query OK, 1 row(s) in set (0.015000s)
+</code></pre>
 
                     </main>
 

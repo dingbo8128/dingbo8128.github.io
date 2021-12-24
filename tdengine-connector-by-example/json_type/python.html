@@ -143,6 +143,41 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="json-type-support-in-python"><a class="header" href="#json-type-support-in-python">JSON Type Support in Python</a></h1>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
+<ol>
+<li>Python: <code>3.10.0</code></li>
+<li>taospy: <code>2.2.0</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
+</ol>
+<h3 id="11-example-use-json-tag"><a class="header" href="#11-example-use-json-tag">1.1 Example: Use JSON Tag</a></h3>
+<pre><code class="language-python">import taos
+
+
+def json_tag_example():
+    conn = taos.connect()
+    conn.execute(&quot;create database  py_test_json_type&quot;)
+    conn.execute(&quot;use py_test_json_type&quot;)
+
+    # create stable
+    conn.execute(&quot;create stable s1 (ts timestamp, v1 int) tags (info json)&quot;)
+    # create table
+    conn.execute('''create table s1_1 using s1 tags ('{&quot;k1&quot;: &quot;v1&quot;}')''')
+    # select tag value as a whole
+    tags = conn.query(&quot;select info, tbname from s1&quot;).fetch_all_into_dict()
+    print(tags)
+    # select value of a specific key
+    k1 = conn.query(&quot;select info-&gt;'k1' as k1 from s1&quot;).fetch_all_into_dict()
+    print(k1)
+
+    conn.query(&quot;drop database py_test_json_type&quot;)
+
+
+if __name__ == '__main__':
+    json_tag_example()
+</code></pre>
+<pre><code class="language-cmd">[{'info': '{&quot;k1&quot;:&quot;v1&quot;}', 'tbname': 's1_1'}]
+[{'k1': '&quot;v1&quot;'}]
+</code></pre>
 
                     </main>
 

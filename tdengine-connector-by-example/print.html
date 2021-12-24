@@ -216,7 +216,8 @@ docker run -p 6030-6042:6030-6042/tcp -p 6030-6042:6030-6042/udp -d tdengine/tde
 <li>install python. python &gt;= 3.4 is recommended.</li>
 <li>install pip</li>
 <li>from TDengine2.1.1, you can install python connector from pypi.org
-<pre><code>pip install taospy
+<pre><code>pip3 unisntall taospy
+pip3 install taospy
 </code></pre>
 </li>
 <li>before TDengine2.1.1, install locally, for example on Windows:
@@ -305,7 +306,7 @@ require github.com/taosdata/driver-go/v2 v2.0.0
 <h2 id="2-get-started"><a class="header" href="#2-get-started">2. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h3 id="21-example-get-connection-use-url"><a class="header" href="#21-example-get-connection-use-url">2.1 Example: Get Connection Use URL</a></h3>
@@ -460,7 +461,7 @@ Process finished with exit code 0
 <p><strong>Test Environment:</strong></p>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.35</code></li>
+<li>taos-jdbcdriver: <code>2.0.35</code></li>
 <li>TDengin server:<code>*</code></li>
 </ol>
 <h3 id="31--set-tdengine-client-parameters"><a class="header" href="#31--set-tdengine-client-parameters">3.1  Set TDengine Client Parameters</a></h3>
@@ -551,8 +552,8 @@ log
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-go"><a class="header" href="#get-connection-with-go">Get Connection with Go</a></h1>
 <h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
-<li>go: <code>1.17</code></li>
-<li>TDengine: <code>2.2.1.3</code></li>
+<li>go: <code>1.17.2</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
 </ol>
 <h2 id="11-example-get-connection"><a class="header" href="#11-example-get-connection">1.1. Example: Get Connection</a></h2>
 <pre><code class="language-go">package main
@@ -565,6 +566,7 @@ import (
 )
 
 func main() {
+	// format: [user[:password]@][net[(addr)]]/dbname[?param1=value1&amp;paramN=valueN]
 	var uri = &quot;root:taosdata/tcp(localhost:6030)/&quot;
 	taos, err := sql.Open(&quot;taosSql&quot;, uri)
 	if err != nil {
@@ -574,7 +576,7 @@ func main() {
 	defer taos.Close()
 }
 </code></pre>
-<h2 id="12-example-connect-to-database-log"><a class="header" href="#12-example-connect-to-database-log">1.2 Example: Connect to Database Log</a></h2>
+<h2 id="12-example-connect-to-specific-database"><a class="header" href="#12-example-connect-to-specific-database">1.2 Example: Connect to Specific Database</a></h2>
 <pre><code class="language-go">package main
 
 import (
@@ -605,7 +607,7 @@ func main() {
 <h2 id="1-get-started-1"><a class="header" href="#1-get-started-1">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h3 id="11-example"><a class="header" href="#11-example">1.1 Example:</a></h3>
@@ -956,6 +958,7 @@ field_lengths: [34, 8, 4, 4, 2, 2, 2, 26, 4, 4, 4, 4, 1, 4, 1, 1, 5, 1, 12]
         print(&quot;block&quot;, i)
         print(blk)
         i += 1
+    conn.query(&quot;drop database pytest&quot;)
     conn.close()
 
 
@@ -1175,7 +1178,7 @@ if __name__ == &quot;__main__&quot;:
 <h2 id="1-get-started-6"><a class="header" href="#1-get-started-6">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h3 id="11-example-3"><a class="header" href="#11-example-3">1.1 Example</a></h3>
@@ -1259,7 +1262,6 @@ public class TestParamBind {
 }
 
 </code></pre>
-<p><strong>Result:</strong></p>
 <pre><code class="language-shell">taos&gt; select  tbname, * from weather;
              tbname             |           ts            |     c1      |     c2     |     no      |  location  |
 =================================================================================================================
@@ -1310,11 +1312,107 @@ public void setNString(int columnIndex, ArrayList&lt;String&gt; list, int size) 
 <h2 id="2-upgrade-to-jdbc-driver-2036"><a class="header" href="#2-upgrade-to-jdbc-driver-2036">2. Upgrade to JDBC Driver 2.0.36</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.36</code></li>
-<li>TDengine: <code>2.2.1.3</code></li>
+<li>taos-jdbcdriver: <code>2.0.36</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
 </ol>
-<h3 id="21-feature-bind-different-table-before-executebatch"><a class="header" href="#21-feature-bind-different-table-before-executebatch">2.1 Feature: Bind Different Table before <code>ExecuteBatch</code></a></h3>
-<p>(developing)</p>
+<h3 id="21-example-bind-different-tables-in-one-batch"><a class="header" href="#21-example-bind-different-tables-in-one-batch">2.1 Example: Bind Different Tables in One Batch</a></h3>
+<p>You can insert into multiple tables in ont batch using param biding api now. It's a new feature of JdBC driver.
+In the following example, we insert into three sub stables in one batch.</p>
+<pre><code class="language-java">package com.taos.test;
+
+import com.taosdata.jdbc.TSDBPreparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class TestBindMultiTable {
+    private Random r = new Random();
+
+    private Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://127.0.0.1:6030&quot;, &quot;root&quot;, &quot;taosdata&quot;);
+        return conn;
+    }
+
+    private void createTable(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(&quot;drop database if exists java_test&quot;);
+            stmt.execute(&quot;create database java_test&quot;);
+            stmt.execute(&quot;use java_test&quot;);
+            stmt.execute(&quot;create stable weather(ts timestamp, c1 int, c2 binary(10)) &quot; +
+                    &quot;tags(no int, location binary(10))&quot;);
+        }
+    }
+
+    public void run() throws SQLException {
+        int numOfTables = 3;
+        int numOfRows = 5;
+        try (Connection conn = getConnection()) {
+            createTable(conn);
+            String psql = &quot;insert into ? using weather tags (?, ?) (ts, c1, c2) values(?, ?, ?)&quot;;
+            try (TSDBPreparedStatement pst = (TSDBPreparedStatement) conn.prepareStatement(psql)) {
+                for (int t = 0; t &lt; numOfTables; t++) {
+                    // change sub table name
+                    pst.setTableName(&quot;w&quot; + t);
+                    // set tags
+                    pst.setTagInt(0, r.nextInt(10));
+                    pst.setTagString(1, &quot;City_&quot; + (t));
+                    // set values
+                    ArrayList&lt;Long&gt; ts = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        ts.add(System.currentTimeMillis() + i);
+                    }
+                    pst.setTimestamp(0, ts);
+                    ArrayList&lt;Integer&gt; s1 = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        s1.add(r.nextInt(100));
+                    }
+                    pst.setInt(1, s1);
+                    ArrayList&lt;String&gt; s2 = new ArrayList&lt;&gt;();
+                    for (int i = 0; i &lt; numOfRows; i++) {
+                        s2.add(&quot;test&quot; + r.nextInt(100));
+                    }
+                    pst.setString(2, s2, 10);
+                    // The cache is not cleared after AddBatch. Do not bind new data again before ExecuteBatch
+                    pst.columnDataAddBatch();
+                }
+                pst.columnDataExecuteBatch();
+                pst.columnDataCloseBatch();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        TestBindMultiTable test = new TestBindMultiTable();
+        test.run();
+    }
+}
+
+</code></pre>
+<pre><code class="language-cmd">
+taos&gt; select * from java_test.weather;
+           ts            |     c1      |     c2     |     no      |  location  |
+================================================================================
+ 2021-12-24 11:00:15.736 |          72 | test14     |           3 | City_0     |
+ 2021-12-24 11:00:15.737 |          62 | test69     |           3 | City_0     |
+ 2021-12-24 11:00:15.738 |          46 | test39     |           3 | City_0     |
+ 2021-12-24 11:00:15.739 |          13 | test42     |           3 | City_0     |
+ 2021-12-24 11:00:15.740 |          75 | test72     |           3 | City_0     |
+ 2021-12-24 11:00:15.770 |          35 | test22     |           6 | City_1     |
+ 2021-12-24 11:00:15.771 |          44 | test95     |           6 | City_1     |
+ 2021-12-24 11:00:15.772 |           9 | test4      |           6 | City_1     |
+ 2021-12-24 11:00:15.773 |          72 | test51     |           6 | City_1     |
+ 2021-12-24 11:00:15.774 |          45 | test32     |           6 | City_1     |
+ 2021-12-24 11:00:15.778 |          42 | test10     |           8 | City_2     |
+ 2021-12-24 11:00:15.779 |          62 | test81     |           8 | City_2     |
+ 2021-12-24 11:00:15.780 |          71 | test4      |           8 | City_2     |
+ 2021-12-24 11:00:15.781 |          41 | test95     |           8 | City_2     |
+ 2021-12-24 11:00:15.782 |          66 | test73     |           8 | City_2     |
+Query OK, 15 row(s) in set (0.066000s)
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding-with-python"><a class="header" href="#parameter-binding-with-python">Parameter Binding with Python</a></h1>
 <h2 id="1-get-started-7"><a class="header" href="#1-get-started-7">1. Get Started</a></h2>
 <ol>
@@ -1400,7 +1498,7 @@ Query OK, 2 row(s) in set (0.003549s)
  weather_shanghai               | 2021-09-13 15:22:18.526 |         120 | shanghai   |
 Query OK, 2 row(s) in set (0.006830s)
 </code></pre>
-<h3 id="13-example-bind-different-tables"><a class="header" href="#13-example-bind-different-tables">1.3. Example: Bind Different Tables</a></h3>
+<h3 id="13-example-bind-different-tables-in-one-batch"><a class="header" href="#13-example-bind-different-tables-in-one-batch">1.3. Example: Bind Different Tables in One Batch</a></h3>
 <pre><code class="language-python">def test_change_table():
     prepare()
     conn = taos.connect(database=&quot;pytest&quot;)
@@ -1447,6 +1545,57 @@ Query OK, 12 row(s) in set (0.006428s)
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding-with-rust"><a class="header" href="#parameter-binding-with-rust">Parameter Binding with Rust</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="parameter-binding-with-c-1"><a class="header" href="#parameter-binding-with-c-1">Parameter Binding with C#</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="schemaless-writing"><a class="header" href="#schemaless-writing">Schemaless Writing</a></h1>
+<p>Since version 2.3.0.0, TDengine support several schemaless writing protocols, including:</p>
+<ol>
+<li>InfluxDB Line Protocol</li>
+<li>OpenTSDB telnet Protocol</li>
+<li>OpenTSDB JSON Protocol</li>
+</ol>
+<p>In this way, super table and it's sub tables will be created automatically as needed. </p>
+<h2 id="1-influxdb-line-protocol"><a class="header" href="#1-influxdb-line-protocol">1. InfluxDB Line Protocol</a></h2>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-txt">measurementName,tagKey=tagValue fieldKey=&quot;fieldValue&quot; 1465839830100400200
+--------------- --------------- --------------------- -------------------
+       |               |                  |                    |
+  Measurement       Tag set           Field set            Timestamp
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-txt">measurementName,tag1=value1,tag2=value2 fieldKey=&quot;fieldValue&quot; 1556813561098000000
+</code></pre>
+<p><strong>Reference:</strong> <a href="https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol">line-protocol</a></p>
+<h2 id="2-opentsdb-telnet-protocol"><a class="header" href="#2-opentsdb-telnet-protocol">2. OpenTSDB Telnet Protocol</a></h2>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-txt">put &lt;metric&gt; &lt;timestamp&gt; &lt;value&gt; &lt;tagk_1&gt;=&lt;tagv_1&gt;[ &lt;tagk_n&gt;=&lt;tagv_n&gt;]
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-txt">put sys.if.bytes.out 1479496100 1.3E3 host=web01 interface=eth0
+put sys.procs.running 1479496100 42 host=web01
+</code></pre>
+<p><strong>Reference:</strong> <a href="http://opentsdb.net/docs/build/html/api_telnet/put.html">Telnet Style API</a></p>
+<h2 id="3-opentsdb-json-protocol"><a class="header" href="#3-opentsdb-json-protocol">3. OpenTSDB JSON Protocol</a></h2>
+<p><strong>Example:</strong></p>
+<pre><code class="language-json">[
+    {
+        &quot;metric&quot;: &quot;sys.cpu.nice&quot;,
+        &quot;timestamp&quot;: 1346846400,
+        &quot;value&quot;: 18,
+        &quot;tags&quot;: {
+           &quot;host&quot;: &quot;web01&quot;,
+           &quot;dc&quot;: &quot;lga&quot;
+        }
+    },
+    {
+        &quot;metric&quot;: &quot;sys.cpu.nice&quot;,
+        &quot;timestamp&quot;: 1346846400,
+        &quot;value&quot;: 9,
+        &quot;tags&quot;: {
+           &quot;host&quot;: &quot;web02&quot;,
+           &quot;dc&quot;: &quot;lga&quot;
+        }
+    }
+]
+</code></pre>
+<p><strong>Reference:</strong> <a href="http://opentsdb.net/docs/build/html/api_http/put.html">HTTP API</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="schemaless-writing-with-java"><a class="header" href="#schemaless-writing-with-java">Schemaless Writing with Java</a></h1>
 <p>will support in 2.0.36.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="schemaless-writing-with-python"><a class="header" href="#schemaless-writing-with-python">Schemaless Writing with Python</a></h1>
@@ -1462,7 +1611,7 @@ Query OK, 12 row(s) in set (0.006428s)
 <h2 id="1-get-started-8"><a class="header" href="#1-get-started-8">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h3 id="11-usage"><a class="header" href="#11-usage">1.1. Usage</a></h3>
@@ -1899,8 +2048,130 @@ if __name__ == &quot;__main__&quot;:
 <div style="break-before: page; page-break-before: always;"></div><h1 id="subscription-with-c"><a class="header" href="#subscription-with-c">Subscription with C++</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="subscription-with-nodejs"><a class="header" href="#subscription-with-nodejs">Subscription with Node.js</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type"><a class="header" href="#json-type">JSON Type</a></h1>
+<h2 id="get-started-3"><a class="header" href="#get-started-3">Get Started</a></h2>
+<p>From TDengine-2.4.0.0, TAG with JSON type can be used. The maximum length of JSON tag is 16k. The JSON value of a JSON tag could not have nested JSON object. Only one JSON tag is allowed and JSON tag can't co-exists with other tags. This is, if your table have a JSON tag, then it can't have other tags.</p>
+<pre><code class="language-sql">taos&gt; create database test;
+Query OK, 0 of 0 row(s) in database (0.010000s)
+
+taos&gt; use test;
+Query OK, 0 of 0 row(s) in database (0.002000s)
+
+taos&gt; create stable s1(ts timestamp, v1 int) tags(info json);
+Query OK, 0 of 0 row(s) in database (0.009000s)
+
+taos&gt; create table s1_1 using s1 tags('{&quot;k1&quot;: &quot;v1&quot;}');
+Query OK, 0 of 0 row(s) in database (0.034000s)
+
+taos&gt; insert into s1_1 values(now, 1);
+Query OK, 1 of 1 row(s) in database (0.005000s)
+
+taos&gt; select * from s1 where info-&gt;'k1' = 'v1';
+           ts            |     v1      |              info              |
+=========================================================================
+ 2021-12-24 09:27:20.867 |           1 | {&quot;k1&quot;:&quot;v1&quot;}                    |
+Query OK, 1 row(s) in set (0.024000s)
+
+taos&gt; select info-&gt;'k1' from s1;
+           info-&gt;'k1'           |
+=================================
+ &quot;v1&quot;                           |
+Query OK, 1 row(s) in set (0.015000s)
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-java"><a class="header" href="#json-type-support-in-java">JSON Type Support in Java</a></h1>
+<h2 id="1-get-started-10"><a class="header" href="#1-get-started-10">1. Get Started</a></h2>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcdriver: <code>2.0.36</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
+</ol>
+<h3 id="11-example-use-json-tag"><a class="header" href="#11-example-use-json-tag">1.1 Example: Use JSON Tag</a></h3>
+<ol>
+<li>create a stable with JSON tag.</li>
+<li>create s table using the stable;</li>
+<li>select tag info.</li>
+</ol>
+<pre><code class="language-java">package com.taos.test;
+
+import java.sql.*;
+
+public class TestJSONTag {
+
+    void printResult(ResultSet resultSet) throws SQLException {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        while (resultSet.next()) {
+            for (int i = 1; i &lt;= metaData.getColumnCount(); i++) {
+                String columnLabel = metaData.getColumnLabel(i);
+                String value = resultSet.getString(i);
+                System.out.printf(&quot;%s: %s\t&quot;, columnLabel, value);
+            }
+            System.out.println();
+        }
+
+    }
+
+    void runJsonTagExample() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://&quot;,
+                &quot;root&quot;,
+                &quot;taosdata&quot;)) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(&quot;create database java_test&quot;);
+                stmt.execute(&quot;use java_test&quot;);
+                stmt.execute(&quot;create stable s1(ts timestamp, v1 int) tags(info json)&quot;);
+                stmt.execute(&quot;create table s1_1 using s1 tags('{\&quot;k1\&quot;: \&quot;v1\&quot;}')&quot;);
+                ResultSet rs = stmt.executeQuery(&quot;select info, tbname from s1&quot;);
+                printResult(rs);
+                rs = stmt.executeQuery(&quot;select info-&gt;'k1' as k1 from s1&quot;);
+                printResult(rs);
+                stmt.execute(&quot;drop database java_test&quot;);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        TestJSONTag testJSONTag = new TestJSONTag();
+        testJSONTag.runJsonTagExample();
+    }
+}
+</code></pre>
+<pre><code class="language-cmd">info: {&quot;k1&quot;:&quot;v1&quot;}	tbname: s1_1	
+k1: &quot;v1&quot;
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-python"><a class="header" href="#json-type-support-in-python">JSON Type Support in Python</a></h1>
+<h2 id="1-get-started-11"><a class="header" href="#1-get-started-11">1. Get Started</a></h2>
+<ol>
+<li>Python: <code>3.10.0</code></li>
+<li>taospy: <code>2.2.0</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
+</ol>
+<h3 id="11-example-use-json-tag-1"><a class="header" href="#11-example-use-json-tag-1">1.1 Example: Use JSON Tag</a></h3>
+<pre><code class="language-python">import taos
+
+
+def json_tag_example():
+    conn = taos.connect()
+    conn.execute(&quot;create database  py_test_json_type&quot;)
+    conn.execute(&quot;use py_test_json_type&quot;)
+
+    # create stable
+    conn.execute(&quot;create stable s1 (ts timestamp, v1 int) tags (info json)&quot;)
+    # create table
+    conn.execute('''create table s1_1 using s1 tags ('{&quot;k1&quot;: &quot;v1&quot;}')''')
+    # select tag value as a whole
+    tags = conn.query(&quot;select info, tbname from s1&quot;).fetch_all_into_dict()
+    print(tags)
+    # select value of a specific key
+    k1 = conn.query(&quot;select info-&gt;'k1' as k1 from s1&quot;).fetch_all_into_dict()
+    print(k1)
+
+    conn.query(&quot;drop database py_test_json_type&quot;)
+
+
+if __name__ == '__main__':
+    json_tag_example()
+</code></pre>
+<pre><code class="language-cmd">[{'info': '{&quot;k1&quot;:&quot;v1&quot;}', 'tbname': 's1_1'}]
+[{'k1': '&quot;v1&quot;'}]
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-go"><a class="header" href="#json-type-support-in-go">JSON Type Support in Go</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-nodejs"><a class="header" href="#json-type-support-in-nodejs">JSON Type Support in Node.js</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-c"><a class="header" href="#json-type-support-in-c">JSON Type Support in C++</a></h1>
@@ -1908,7 +2179,7 @@ if __name__ == &quot;__main__&quot;:
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-type-support-in-c-1"><a class="header" href="#json-type-support-in-c-1">JSON Type Support in C#</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="restful-api"><a class="header" href="#restful-api">Restful API</a></h1>
 <p>TDengine's Restful API enable you access TDengine server directly using HTTP requests without installing TDengine client. So it's maybe the most convenient way to use TDengine. Let's test it using <code>curl</code> command.</p>
-<h2 id="1-get-started-10"><a class="header" href="#1-get-started-10">1. Get Started</a></h2>
+<h2 id="1-get-started-12"><a class="header" href="#1-get-started-12">1. Get Started</a></h2>
 <p><strong>Test environment</strong></p>
 <ol>
 <li>TDengine: <code>2.2.1.3</code></li>
@@ -2040,10 +2311,10 @@ if __name__ == &quot;__main__&quot;:
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="use-restful-api-with-java"><a class="header" href="#use-restful-api-with-java">Use Restful API with Java</a></h1>
 <p>Java connector wrapped Restful API with JDBC API. You can treat it as another driver besides <code>jdbc:TAOS:*</code>, this is <code>jdbc:TAOS-RS:*</code>.</p>
-<h2 id="1-get-started-11"><a class="header" href="#1-get-started-11">1. Get Started</a></h2>
+<h2 id="1-get-started-13"><a class="header" href="#1-get-started-13">1. Get Started</a></h2>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcriver: <code>2.0.34</code></li>
+<li>taos-jdbcdriver: <code>2.0.34</code></li>
 <li>TDengine: <code>2.2.1.3</code></li>
 </ol>
 <h2 id="11-pom-example"><a class="header" href="#11-pom-example">1.1. pom example</a></h2>
@@ -2170,8 +2441,17 @@ if __name__ == &quot;__main__&quot;:
 <li><code>TAOS_SUB *taos_subscribe(TAOS* taos, int restart, const char* topic, const char *sql, TAOS_SUBSCRIBE_CALLBACK fp, void *param, int interval)</code></li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="connector-feature-matrix"><a class="header" href="#connector-feature-matrix">Connector Feature Matrix</a></h1>
-<h2 id="tdengine-2600"><a class="header" href="#tdengine-2600">TDengine 2.6.0.0</a></h2>
 <h2 id="tdengine-2400"><a class="header" href="#tdengine-2400">TDengine 2.4.0.0</a></h2>
+<table><thead><tr><th>Feature</th><th>C/C++</th><th>Java</th><th>Python</th><th>Go</th><th>C#</th><th>Node.js</th><th>Rust</th><th>Lua</th></tr></thead><tbody>
+<tr><td>Plain SQL</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Param Binding SQL</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Async Query</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Continuous Query</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Subscription</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Schemaless Writing</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>JSON Tag</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>RESTful</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>
 <h2 id="tdengine-2300-1"><a class="header" href="#tdengine-2300-1">TDengine 2.3.0.0</a></h2>
 <table><thead><tr><th>API Category</th><th>C Interface</th><th>Java (2.0.36)</th><th>Python</th><th>Go</th><th>C#</th><th>NodeJS</th><th>Rust</th><th>lua</th></tr></thead><tbody>
 <tr><td>fundamental</td><td>taos_init()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
@@ -2230,65 +2510,6 @@ if __name__ == &quot;__main__&quot;:
 <tr><td>misc</td><td>taos_load_table_info()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
 <tr><td>schemaless</td><td>taos_schemaless_insert()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
 <tr><td>JSON Tag</td><td></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
-<tr><td>RESTful</td><td></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
-</tbody></table>
-<h2 id="tdengine-2113"><a class="header" href="#tdengine-2113">TDengine 2.1.1.3</a></h2>
-<table><thead><tr><th>API Category</th><th>C Interface</th><th>Java(2.0.34)</th><th>Python</th><th>Go</th><th>C#</th><th>NodeJS</th><th>Rust</th><th>lua</th></tr></thead><tbody>
-<tr><td>fundamental</td><td>taos_init()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_cleanup()</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_options()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_set_config()</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_connect()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_connect_auth()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_close()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_data_type()</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td>stmt(bind_paramter)</td><td>taos_stmt_init()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_prepare()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_set_tbname_tags()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_set_tbname()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_set_sub_tbname()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_is_insert()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_num_params()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_get_param()</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_bind_param()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_bind_param_batch()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_bind_single_param_batch()</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_add_batch()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_execute()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_affected_rows()</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_use_result()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_close()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_stmt_errstr()</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td></tr>
-<tr><td>sql</td><td>taos_query()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_fetch_row()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_result_precision()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_free_result()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_field_count()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_num_fields()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_affected_rows()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_fetch_fields()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_select_db()</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_print_row()</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_stop_query()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_is_null()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_is_update_query()</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_fetch_block()</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_fetch_lengths()</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
-<tr><td></td><td>taos_validate_sql()</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_reset_current_db()</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
-<tr><td>info</td><td>taos_get_server_info()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_get_client_info()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_errstr()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td></td><td>taos_errno()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
-<tr><td>async sql</td><td>taos_query_a()</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td></tr>
-<tr><td></td><td>taos_fetch_rows_a()</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td>subscribe</td><td>taos_subscribe()</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_consume()</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td></td><td>taos_unsubscribe()</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
-<tr><td>stream</td><td>taos_open_stream()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td></tr>
-<tr><td></td><td>taos_close_stream()</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✓</td></tr>
-<tr><td>misc</td><td>taos_load_table_info()</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr>
-<tr><td>schemaless</td><td>taos_schemaless_insert()</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
 <tr><td>RESTful</td><td></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td><td>✗</td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="troubleshooting-one"><a class="header" href="#troubleshooting-one">Troubleshooting One</a></h1>

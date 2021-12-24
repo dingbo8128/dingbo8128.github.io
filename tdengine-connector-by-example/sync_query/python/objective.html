@@ -236,6 +236,7 @@ field_lengths: [34, 8, 4, 4, 2, 2, 2, 26, 4, 4, 4, 4, 1, 4, 1, 1, 5, 1, 12]
         print(&quot;block&quot;, i)
         print(blk)
         i += 1
+    conn.query(&quot;drop database pytest&quot;)
     conn.close()
 
 

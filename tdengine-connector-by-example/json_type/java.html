@@ -143,6 +143,64 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="json-type-support-in-java"><a class="header" href="#json-type-support-in-java">JSON Type Support in Java</a></h1>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
+<ol>
+<li>Java: <code>1.8</code></li>
+<li>taos-jdbcdriver: <code>2.0.36</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
+</ol>
+<h3 id="11-example-use-json-tag"><a class="header" href="#11-example-use-json-tag">1.1 Example: Use JSON Tag</a></h3>
+<ol>
+<li>create a stable with JSON tag.</li>
+<li>create s table using the stable;</li>
+<li>select tag info.</li>
+</ol>
+<pre><code class="language-java">package com.taos.test;
+
+import java.sql.*;
+
+public class TestJSONTag {
+
+    void printResult(ResultSet resultSet) throws SQLException {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        while (resultSet.next()) {
+            for (int i = 1; i &lt;= metaData.getColumnCount(); i++) {
+                String columnLabel = metaData.getColumnLabel(i);
+                String value = resultSet.getString(i);
+                System.out.printf(&quot;%s: %s\t&quot;, columnLabel, value);
+            }
+            System.out.println();
+        }
+
+    }
+
+    void runJsonTagExample() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(&quot;jdbc:TAOS://&quot;,
+                &quot;root&quot;,
+                &quot;taosdata&quot;)) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(&quot;create database java_test&quot;);
+                stmt.execute(&quot;use java_test&quot;);
+                stmt.execute(&quot;create stable s1(ts timestamp, v1 int) tags(info json)&quot;);
+                stmt.execute(&quot;create table s1_1 using s1 tags('{\&quot;k1\&quot;: \&quot;v1\&quot;}')&quot;);
+                ResultSet rs = stmt.executeQuery(&quot;select info, tbname from s1&quot;);
+                printResult(rs);
+                rs = stmt.executeQuery(&quot;select info-&gt;'k1' as k1 from s1&quot;);
+                printResult(rs);
+                stmt.execute(&quot;drop database java_test&quot;);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        TestJSONTag testJSONTag = new TestJSONTag();
+        testJSONTag.runJsonTagExample();
+    }
+}
+</code></pre>
+<pre><code class="language-cmd">info: {&quot;k1&quot;:&quot;v1&quot;}	tbname: s1_1	
+k1: &quot;v1&quot;
+</code></pre>
 
                     </main>
 
