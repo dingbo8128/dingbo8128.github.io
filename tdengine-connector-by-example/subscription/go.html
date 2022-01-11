@@ -143,6 +143,76 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="subscription-with-go"><a class="header" href="#subscription-with-go">Subscription with Go</a></h1>
+<h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
+<ol>
+<li>go: <code>1.17.2</code></li>
+<li>TDengine: <code>2.4.0.0</code></li>
+</ol>
+<h2 id="11-example-monitor-login-log"><a class="header" href="#11-example-monitor-login-log">1.1 Example: Monitor Login Log</a></h2>
+<pre><code class="language-go">package main
+
+import (
+	&quot;database/sql/driver&quot;
+	&quot;fmt&quot;
+	&quot;io&quot;
+	&quot;os&quot;
+	&quot;time&quot;
+
+	taos &quot;github.com/taosdata/driver-go/v2/af&quot;
+)
+
+func main() {
+	db, err := taos.Open(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;log&quot;, 0)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	defer db.Close()
+	topic, err := db.Subscribe(false, &quot;taoslogtail&quot;, &quot;select ts, level, ipaddr, content from log&quot;, time.Second)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(2)
+	}
+	defer topic.Unsubscribe(true)
+	for {
+		func() {
+			rows, err := topic.Consume()
+			defer func() { rows.Close(); time.Sleep(time.Second) }()
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(3)
+			}
+			for {
+				values := make([]driver.Value, 4)
+				err := rows.Next(values)
+				if err == io.EOF {
+					break
+				} else if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+					os.Exit(4)
+				}
+				ts := values[0].(time.Time)
+				level := values[1].(int8)
+				ipaddr := values[2].(string)
+				content := values[3].(string)
+				fmt.Printf(&quot;%s %d %s %s\n&quot;, ts.Format(time.StampMilli), level, ipaddr, content)
+			}
+		}()
+	}
+}
+</code></pre>
+<pre><code class="language-cmd">Dec 24 08:38:33.301 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:55.882 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:56.401 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:56.911 2 localhost:6030 user:root login from 127.0.0.1, result:Invalid database name
+Dec 24 08:47:57.420 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:57.896 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:58.406 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:58.416 0 localhost:6030 db:0.pytest, is created by root
+Dec 24 08:47:58.448 0 localhost:6030 db:0.pytest, is dropped by root
+Dec 24 08:47:58.906 0 localhost:6030 user:root login from 127.0.0.1, result:success
+Dec 24 08:47:58.914 0 localhost:6030 db:0.pytest, is created by root
+</code></pre>
 
                     </main>
 
