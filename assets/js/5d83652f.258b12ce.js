@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunktddocs=self.webpackChunktddocs||[]).push([[4929],{7909:function(t){t.exports=JSON.parse('{"title":"\u96c6\u7fa4","slug":"/category/\u96c6\u7fa4","permalink":"/category/\u96c6\u7fa4","navigation":{"previous":{"title":"Grafana","permalink":"/third-party/grafana"},"next":{"title":"\u96c6\u7fa4\u5b89\u88c5","permalink":"/cluster/install"}}}')}}]);
