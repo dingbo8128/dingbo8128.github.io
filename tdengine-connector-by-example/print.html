@@ -473,16 +473,14 @@ secondEp              cluster_node2:6030
 
 Process finished with exit code 0
 </code></pre>
-<h2 id="3--upgrade-to-jdbc-driver-2035"><a class="header" href="#3--upgrade-to-jdbc-driver-2035">3.  Upgrade to JDBC Driver 2.0.35</a></h2>
+<h2 id="3--upgrade-to-jdbc-driver-2037"><a class="header" href="#3--upgrade-to-jdbc-driver-2037">3.  Upgrade to JDBC Driver 2.0.37</a></h2>
 <p><strong>Test Environment:</strong></p>
 <ol>
 <li>Java: <code>1.8</code></li>
-<li>taos-jdbcdriver: <code>2.0.35</code></li>
-<li>TDengin server:<code>*</code></li>
+<li>taos-jdbcdriver: <code>2.0.37</code></li>
+<li>TDengin server:<code>2.4</code></li>
 </ol>
 <h3 id="31--set-tdengine-client-parameters"><a class="header" href="#31--set-tdengine-client-parameters">3.1  Set TDengine Client Parameters</a></h3>
-<p>You can set more TDengine client parameters in both URL and properties now.</p>
-<p>(testing)</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-python"><a class="header" href="#get-connection-with-python">Get Connection with Python</a></h1>
 <h2 id="1-pip-install-example"><a class="header" href="#1-pip-install-example">1. pip install example</a></h2>
 <p>The easiest way to install Python Connector is <code>pip install</code>.</p>
@@ -493,7 +491,7 @@ pip install taospy==2.0.34
 <ol>
 <li>python: <code>3.10</code></li>
 <li>taospy: <code>2.1.2</code></li>
-<li>TDengine 2.2.1.3</li>
+<li>TDengine <code>2.2.1.3</code></li>
 </ol>
 <h3 id="21-example-get-server-version-and-client-version"><a class="header" href="#21-example-get-server-version-and-client-version">2.1. Example: Get Server Version and Client Version</a></h3>
 <pre><code class="language-python">import taos
@@ -565,6 +563,12 @@ dn1
 slowquery
 log
 </code></pre>
+<h2 id="3-tdengine-24"><a class="header" href="#3-tdengine-24">3. TDengine 2.4</a></h2>
+<ol>
+<li>python: <code>3.10</code></li>
+<li>taospy: <code>2.2</code></li>
+<li>TDengine <code>2.4.0.0</code></li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-connection-with-go"><a class="header" href="#get-connection-with-go">Get Connection with Go</a></h1>
 <h2 id="1-get-started"><a class="header" href="#1-get-started">1. Get Started</a></h2>
 <ol>
